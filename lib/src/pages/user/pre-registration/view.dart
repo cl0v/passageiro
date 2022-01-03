@@ -37,7 +37,7 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
-                //TODO: Printar o erro de forma correta comn base no error handler!
+                //TODO: Printar o erro de forma correta com base no error handler!
                 child: Text(snapshot.error.toString()),
               );
             }
