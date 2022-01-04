@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:passageiro/src/pages/user/pre-registration/screens/success.dart';
+import 'package:passageiro/src/screens/loading.dart';
 import 'screens/nickname.dart';
 import 'screens/phone.dart';
 import 'controller.dart';
@@ -18,11 +20,18 @@ class UserPreRegistrationPage extends StatefulWidget {
 
 class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
   late final UserPreRegistrationController controller;
+
   @override
   void didChangeDependencies() {
     controller = UserPreRegistrationProvider.of(context)!;
     // controller.add(UserPreRegistrationState.phone);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -32,27 +41,28 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
       // floatingActionButton: CustomFabExtended(label: 'Continuar', onPressed: (){},),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: StreamBuilder<UserPreRegistrationState>(
-          stream: controller.stream,
-          initialData: UserPreRegistrationState.values.first,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                //TODO: Printar o erro de forma correta com base no error handler!
-                child: Text(snapshot.error.toString()),
-              );
-            }
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.data == null) {
-              return const Text('Algo deu errado!');
-            }
-            return _StateHandler(
-              state: snapshot.data!,
+        stream: controller.stream,
+        initialData: UserPreRegistrationState.values.first,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              //TODO: Printar o erro de forma correta com base no error handler!
+              child: Text(snapshot.error.toString()),
             );
-          }),
+          }
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data == null) {
+            return const Text('Algo deu errado!');
+          }
+          return _StateHandler(
+            state: snapshot.data!,
+          );
+        },
+      ),
     );
   }
 }
@@ -69,13 +79,15 @@ class _StateHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (state) {
       case UserPreRegistrationState.nick:
-        return  NicknameScreen();
+        return NicknameScreen();
       case UserPreRegistrationState.phone:
-        return UserPhoneScreen();
+        return const UserPhoneScreen();
       case UserPreRegistrationState.code:
-        return UserPhoneCodeConfirmationScreen();
-      default:
-        return Container();
+        return const UserPhoneCodeConfirmationScreen();
+      case UserPreRegistrationState.loading:
+        return const LoadingScreen();
+      case UserPreRegistrationState.success:
+        return const UserPreRegistrationSuccessScreen();
     }
   }
 }

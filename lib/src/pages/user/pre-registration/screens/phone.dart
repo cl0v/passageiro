@@ -3,7 +3,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/pdf_reader.dart';
-import 'package:passageiro/src/pages/user/pre-registration/state.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 import '../controller.dart';

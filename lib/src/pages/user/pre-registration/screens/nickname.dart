@@ -5,20 +5,47 @@ import 'package:passageiro/src/pages/user/pre-registration/state.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
-class NicknameScreen extends StatelessWidget {
-  NicknameScreen({
+import '../controller.dart';
+
+class NicknameScreen extends StatefulWidget {
+  const NicknameScreen({
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController _tNick = TextEditingController();
+  @override
+  State<NicknameScreen> createState() => _NicknameScreenState();
+}
+
+class _NicknameScreenState extends State<NicknameScreen> {
+  
+  late final TextEditingController _tNick;
+
+  late final UserPreRegistrationController controller;
+
+  @override
+  void initState() {
+    _tNick = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    controller = UserPreRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tNick.dispose();
+    super.dispose();
+  }
+
+  _onNextPressed() {
+    controller.setNickname(_tNick.text);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _onNextPressed() {
-      final controller = UserPreRegistrationProvider.of(context)!;
-      controller.setNickname(_tNick.text);
-    }
-
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         onPressed: _onNextPressed,

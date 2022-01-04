@@ -5,6 +5,8 @@ import 'package:passageiro/src/pages/user/pre-registration/provider.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
+import '../controller.dart';
+
 class UserPhoneCodeConfirmationScreen extends StatefulWidget {
   const UserPhoneCodeConfirmationScreen({Key? key}) : super(key: key);
 
@@ -15,21 +17,33 @@ class UserPhoneCodeConfirmationScreen extends StatefulWidget {
 
 class _UserPhoneCodeConfirmationScreenState
     extends State<UserPhoneCodeConfirmationScreen> {
-  final TextEditingController _controller = TextEditingController();
+  late final TextEditingController _codeController;
+  late final UserPreRegistrationController controller;
 
   bool available = false;
 
   @override
-  Widget build(BuildContext context) {
-    _onEnterPressed() {
-      final controller = UserPreRegistrationProvider.of(context)!;
-      controller.verifyCode(context, _controller.text).call();
-    }
+  void initState() {
+    _codeController = TextEditingController();
+    super.initState();
+  }
 
+  @override
+  void didChangeDependencies() {
+    controller = UserPreRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  _onEnterPressed(BuildContext context) {
+    controller.verifyCode(context, _codeController.text).call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         label: enter,
-        onPressed: available ? _onEnterPressed : null,
+        onPressed: available ? () => _onEnterPressed(context) : null,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
@@ -44,7 +58,7 @@ class _UserPhoneCodeConfirmationScreenState
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
-                controller: _controller,
+                controller: _codeController,
                 maxLength: 4,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
