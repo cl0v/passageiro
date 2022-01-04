@@ -34,6 +34,12 @@ class _UserPhoneCodeConfirmationScreenState
     super.didChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
   _onEnterPressed(BuildContext context) {
     controller.verifyCode(context, _codeController.text).call();
   }

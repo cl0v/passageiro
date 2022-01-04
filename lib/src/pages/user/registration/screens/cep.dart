@@ -3,18 +3,45 @@ import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
+import '../controller.dart';
 import '../provider.dart';
 
-class UserCepScreen extends StatelessWidget {
-  UserCepScreen({Key? key}) : super(key: key);
-  final _tCEP = TextEditingController();
+class UserCepScreen extends StatefulWidget {
+  const UserCepScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserCepScreen> createState() => _UserCepScreenState();
+}
+
+class _UserCepScreenState extends State<UserCepScreen> {
+  late final TextEditingController _tCEP;
+
+  late final UserRegistrationController controller;
+
+  @override
+  void initState() {
+    _tCEP = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    controller = UserRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tCEP.dispose();
+    super.dispose();
+  }
+
+  _onNextPressed() {
+    controller.setCep(_tCEP.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    _onNextPressed() {
-      final controller = UserRegistrationProvider.of(context);
-      controller?.setCep(_tCEP.text);
-    }
-
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         onPressed: _onNextPressed,
@@ -34,7 +61,7 @@ class UserCepScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tCEP,
-                  hintText: 'CPF',
+                hintText: 'CPF',
               ),
             )
           ],

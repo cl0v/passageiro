@@ -4,18 +4,43 @@ import 'package:passageiro/src/pages/user/registration/provider.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
-class UserCPFScreen extends StatelessWidget {
-  UserCPFScreen({Key? key}) : super(key: key);
+import '../controller.dart';
 
-  final _tCpf = TextEditingController();
+class UserCPFScreen extends StatefulWidget {
+  const UserCPFScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserCPFScreen> createState() => _UserCPFScreenState();
+}
+
+class _UserCPFScreenState extends State<UserCPFScreen> {
+  late final TextEditingController _tCpf;
+  late final UserRegistrationController controller;
+
+  @override
+  void initState() {
+    _tCpf = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    controller = UserRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tCpf.dispose();
+    super.dispose();
+  }
+
+  _onNextPressed() {
+    controller.setCpf(_tCpf.text);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _onNextPressed() {
-      final controller = UserRegistrationProvider.of(context);
-      controller?.setCpf(_tCpf.text);
-    }
-
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         onPressed: _onNextPressed,

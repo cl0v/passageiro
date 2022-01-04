@@ -2,5 +2,6 @@
 
 class UserPreRegistrationViewModel {
   late String phone;
-  late String nickname; 
+  late String nickname;
+  late String code;
 }

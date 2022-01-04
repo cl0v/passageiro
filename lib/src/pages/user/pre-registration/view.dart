@@ -24,7 +24,6 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
   @override
   void didChangeDependencies() {
     controller = UserPreRegistrationProvider.of(context)!;
-    // controller.add(UserPreRegistrationState.phone);
     super.didChangeDependencies();
   }
 
@@ -38,8 +37,6 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      // floatingActionButton: CustomFabExtended(label: 'Continuar', onPressed: (){},),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: StreamBuilder<UserPreRegistrationState>(
         stream: controller.stream,
         initialData: UserPreRegistrationState.values.first,

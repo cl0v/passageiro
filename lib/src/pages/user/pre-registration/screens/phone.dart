@@ -30,6 +30,7 @@ class _UserPhoneScreenState extends State<UserPhoneScreen> {
     super.didChangeDependencies();
   }
 
+
   _onTermsPressed() => pushNamed(context, PolicyPrivacyPage.route);
 
   _onContinue() {

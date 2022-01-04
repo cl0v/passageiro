@@ -18,6 +18,7 @@ class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
 
   Function verifyCode(BuildContext context, String code) {
     //TODO: Implementar verificação de código.
+    _viewModel.code = code;
     return () {};
   }
 

@@ -4,17 +4,43 @@ import 'package:passageiro/src/pages/user/registration/provider.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
-class UserNameScreen extends StatelessWidget {
-  UserNameScreen({Key? key}) : super(key: key);
-  final TextEditingController _tName = TextEditingController();
+import '../controller.dart';
+
+class UserNameScreen extends StatefulWidget {
+  const UserNameScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserNameScreen> createState() => _UserNameScreenState();
+}
+
+class _UserNameScreenState extends State<UserNameScreen> {
+  late final TextEditingController _tName;
+  late final UserRegistrationController controller;
+
+  @override
+  void initState() {
+    _tName = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    controller = UserRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _tName.dispose();
+    super.dispose();
+  }
+
+  _onNextPressed() {
+    controller.setName(_tName.text);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _onNextPressed() {
-      final controller = UserRegistrationProvider.of(context);
-      controller?.setName(_tName.text);
-    }
-
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         onPressed: _onNextPressed,

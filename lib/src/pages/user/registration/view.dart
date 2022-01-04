@@ -58,16 +58,16 @@ class _StateHandler extends StatelessWidget {
     late Widget result = Container();
     switch (state) {
       case UserRegistrationState.name:
-        result = UserNameScreen();
+        result = const UserNameScreen();
         break;
       case UserRegistrationState.cpf:
-        result = UserCPFScreen();
+        result = const UserCPFScreen();
         break;
       case UserRegistrationState.email:
-        result = UserEmailScreen();
+        result = const UserEmailScreen();
         break;
       case UserRegistrationState.cep:
-        result = UserCepScreen();
+        result = const UserCepScreen();
         break;
       case UserRegistrationState.address:
         // TODO: Handle this case.

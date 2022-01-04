@@ -17,7 +17,6 @@ class NicknameScreen extends StatefulWidget {
 }
 
 class _NicknameScreenState extends State<NicknameScreen> {
-  
   late final TextEditingController _tNick;
 
   late final UserPreRegistrationController controller;
