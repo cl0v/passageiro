@@ -14,6 +14,7 @@ class UserCPFScreen extends StatefulWidget {
 }
 
 class _UserCPFScreenState extends State<UserCPFScreen> {
+
   late final TextEditingController _tCpf;
   late final UserRegistrationController controller;
 
@@ -60,7 +61,7 @@ class _UserCPFScreenState extends State<UserCPFScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tCpf,
-                hintText: 'CPF',
+                labelText: 'CPF',
               ),
             )
           ],

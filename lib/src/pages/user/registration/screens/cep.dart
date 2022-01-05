@@ -53,7 +53,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
         child: Column(
           children: [
             Text(
-              'Qual é o número do seu CPF?',
+              'Qual é o número do seu CEP?',
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.start,
             ),
@@ -61,7 +61,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tCEP,
-                hintText: 'CPF',
+                labelText: 'CEP',
               ),
             )
           ],

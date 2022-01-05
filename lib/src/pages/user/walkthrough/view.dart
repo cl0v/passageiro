@@ -10,6 +10,7 @@ class WalkthroughScreen extends StatelessWidget {
   _onSkipPressed() {
     //TODO: Implement skip Walkthrough...
   }
+  
   _onNextPressed() {
     if (_controller.page! >= (_list.length - 1).toDouble()) {
       return _onSkipPressed();

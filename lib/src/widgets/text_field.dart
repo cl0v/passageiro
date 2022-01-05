@@ -6,6 +6,7 @@ class CustomTextFieldWidget extends StatelessWidget {
     Key? key,
     this.controller,
     this.hintText,
+    this.labelText,
     this.inputFormatters,
     this.keyboardType,
     this.maxLength,
@@ -14,6 +15,7 @@ class CustomTextFieldWidget extends StatelessWidget {
 
   final TextEditingController? controller;
   final String? hintText;
+  final String? labelText;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
@@ -23,12 +25,13 @@ class CustomTextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      maxLength : maxLength,
+      maxLength: maxLength,
       onChanged: onChanged,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
+        labelText: labelText,
         hintText: hintText,
       ),
     );

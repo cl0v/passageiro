@@ -76,7 +76,7 @@ class _StateHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (state) {
       case UserPreRegistrationState.nick:
-        return NicknameScreen();
+        return const NicknameScreen();
       case UserPreRegistrationState.phone:
         return const UserPhoneScreen();
       case UserPreRegistrationState.code:

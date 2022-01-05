@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/bloc.dart';
+import 'package:passageiro/core/utils/navigator.dart';
+import 'package:passageiro/src/pages/user/registration/models.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
 import 'package:passageiro/src/pages/user/registration/viewmodel.dart';
 
@@ -31,7 +34,28 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
     _nextPage();
   }
 
+  void setAddress(String street, String number, String complement) {
+    _viewModel.address = Address(
+      street: street,
+      number: number,
+      complement: complement,
+    );
+    _nextPage();
+  }
+
+  void onBackPressed(BuildContext context) {
+    if (_pageIndex >= 1) {
+      _previousPage();
+    } else {
+      pop(context);
+    }
+  }
+
   _nextPage() {
     add(UserRegistrationState.values[++_pageIndex]);
+  }
+
+  _previousPage() {
+    add(UserRegistrationState.values[--_pageIndex]);
   }
 }

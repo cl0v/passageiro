@@ -60,7 +60,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tName,
-                hintText: 'Nome',
+                labelText: 'Nome',
               ),
             )
           ],

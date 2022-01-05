@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/src/pages/user/registration/provider.dart';
+import 'package:passageiro/src/pages/user/registration/screens/address.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
@@ -9,6 +10,7 @@ import 'screens/cep.dart';
 import 'screens/cpf.dart';
 import 'screens/email.dart';
 import 'screens/name.dart';
+import 'screens/pictures.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   const UserRegistrationPage({Key? key}) : super(key: key);
@@ -28,16 +30,21 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => controller.onBackPressed(context),
+        ),
+      ),
       body: StreamBuilder<UserRegistrationState>(
         stream: controller.stream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorScreen(
-                text: snapshot.error.toString(),
-                onPressed: () {
-                  //TODO: OnTap
-                });
+              text: snapshot.error.toString(),
+              onPressed: () {
+                //TODO: OnTap
+              },
+            );
           }
           if (!snapshot.hasData) {
             return const LoadingScreen();
@@ -50,7 +57,10 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
 }
 
 class _StateHandler extends StatelessWidget {
-  const _StateHandler({Key? key, required this.state}) : super(key: key);
+  const _StateHandler({
+    Key? key,
+    required this.state,
+  }) : super(key: key);
   final UserRegistrationState state;
 
   @override
@@ -70,15 +80,12 @@ class _StateHandler extends StatelessWidget {
         result = const UserCepScreen();
         break;
       case UserRegistrationState.address:
-        // TODO: Handle this case.
+        result = const UserAddressScreen();
         break;
-      case UserRegistrationState.selfie:
-        // TODO: Handle this case.
+      case UserRegistrationState.picture:
+        result = const UserRegistrationPicturesScreen();
         break;
-      case UserRegistrationState.document:
-        // TODO: Handle this case.
-        break;
-      case UserRegistrationState.password:
+      case UserRegistrationState.pin:
         // TODO: Handle this case.
         break;
     }

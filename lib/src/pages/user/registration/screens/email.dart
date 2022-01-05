@@ -60,7 +60,7 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tEmail,
-                hintText: 'Email',
+                labelText: 'Email',
               ),
             )
           ],
