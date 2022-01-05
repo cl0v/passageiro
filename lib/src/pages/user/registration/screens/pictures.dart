@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 
+import '../controller.dart';
 import '../provider.dart';
 
 final _values = [
@@ -38,16 +40,25 @@ class UserRegistrationPicturesScreen extends StatefulWidget {
 class _UserRegistrationPicturesScreenState
     extends State<UserRegistrationPicturesScreen> {
   DocumentType documentType = DocumentType.RG;
+  late final UserRegistrationController controller;
+
+  @override
+  void didChangeDependencies() {
+    controller = UserRegistrationProvider.of(context)!;
+    super.didChangeDependencies();
+  }
 
   _onNextPressed() {}
 
   _onTap(String title) {
-    _state[title] = !_state[title]!;
+    ImagePicker().pickImage(source: ImageSource.camera);
+    setState(() {
+      _state[title] = !_state[title]!;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = UserRegistrationProvider.of(context)!;
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         onPressed: _onNextPressed,
@@ -69,22 +80,19 @@ class _UserRegistrationPicturesScreenState
                     padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
                     child: Card(
                       child: ListTile(
-                          leading: const Icon(Icons.upload_rounded),
-                          trailing: _state[e] ?? false
-                              ? const Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                )
-                              : const Icon(
-                                  Icons.warning_rounded,
-                                  color: Colors.yellow,
-                                ),
-                          onTap: () {
-                            setState(() {
-                              _onTap(e);
-                            });
-                          },
-                          title: Text(_titles[e]!)),
+                        leading: const Icon(Icons.upload_rounded),
+                        trailing: _state[e] ?? false
+                            ? const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              )
+                            : const Icon(
+                                Icons.warning_rounded,
+                                color: Colors.yellow,
+                              ),
+                        onTap: () => _onTap(e),
+                        title: Text(_titles[e]!),
+                      ),
                     ),
                   ),
                 )

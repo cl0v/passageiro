@@ -23,7 +23,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   late UserRegistrationController controller;
   @override
   void didChangeDependencies() {
-    controller = UserRegistrationProvider.of(context)!..init();
+    controller = UserRegistrationProvider.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -37,6 +37,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
       ),
       body: StreamBuilder<UserRegistrationState>(
         stream: controller.stream,
+        initialData: UserRegistrationState.picture,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorScreen(

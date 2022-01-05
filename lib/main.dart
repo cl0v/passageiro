@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: defaultTheme,
       routes: Routes.routes,
-      initialRoute: UserRegistrationProvider.route,
+      initialRoute: UserPreRegistrationProvider.route,
       // home:  
     );
   }

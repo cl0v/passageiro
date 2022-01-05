@@ -1,4 +1,4 @@
-final policeAndTerms = 'https://web.buzzao.com.br/docs/TERMO_DE_USO.pdf';
+final httpPoliceAndTerms = 'https://web.buzzao.com.br/docs/TERMO_DE_USO.pdf';
 
 // Verificação do código no precadastro
 final httpUserPhoneCodeVerify = '/auth/auth/login';

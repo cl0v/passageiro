@@ -10,9 +10,6 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
 
   int _pageIndex = 0;
 
-  init() {
-    add(UserRegistrationState.values[_pageIndex]);
-  }
 
   void setName(String name) {
     _viewModel.name = name;
