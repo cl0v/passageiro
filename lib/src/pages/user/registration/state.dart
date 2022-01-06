@@ -7,4 +7,6 @@ enum UserRegistrationState {
   picture,
   pin,
   pinConfirmation,
+  loading,
+  success,
 }

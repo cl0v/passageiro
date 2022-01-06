@@ -1,3 +1,4 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/src/widgets/fab.dart';
@@ -18,6 +19,8 @@ class _UserCepScreenState extends State<UserCepScreen> {
 
   late final UserRegistrationController controller;
 
+  final mask = TextInputMask(mask: ['99999-999']);
+
   @override
   void initState() {
     _tCEP = TextEditingController();
@@ -37,7 +40,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
   }
 
   _onNextPressed() {
-    controller.setCep(_tCEP.text);
+    controller.setCep(mask.magicMask.clearMask(_tCEP.text));
   }
 
   @override
@@ -62,6 +65,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
               child: CustomTextFieldWidget(
                 controller: _tCEP,
                 labelText: 'CEP',
+                inputFormatters: [mask],
               ),
             )
           ],

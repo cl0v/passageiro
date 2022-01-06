@@ -48,7 +48,9 @@ class _UserRegistrationPinConfirmationScreenState
     });
   }
 
-  onDonePressed() {}
+  onDonePressed() {
+    controller.finish();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,14 @@ class _UserRegistrationPinConfirmationScreenState
                   ? const Text('As senhas não conferem, tente novamente')
                   : Container(),
             )
-          ].map((e) => Padding(padding: EdgeInsets.only(bottom: 12), child: e,)).toList(),
+          ]
+              .map(
+                (e) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: e,
+                ),
+              )
+              .toList(),
         ),
       ),
     );

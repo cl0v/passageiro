@@ -1,3 +1,4 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/src/pages/user/registration/provider.dart';
@@ -5,6 +6,7 @@ import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
+import '../validators.dart';
 
 class UserCPFScreen extends StatefulWidget {
   const UserCPFScreen({Key? key}) : super(key: key);
@@ -14,9 +16,12 @@ class UserCPFScreen extends StatefulWidget {
 }
 
 class _UserCPFScreenState extends State<UserCPFScreen> {
-
   late final TextEditingController _tCpf;
   late final UserRegistrationController controller;
+
+  final mask = TextInputMask(
+    mask: ['999.999.999-99'],
+  );
 
   @override
   void initState() {
@@ -37,14 +42,14 @@ class _UserCPFScreenState extends State<UserCPFScreen> {
   }
 
   _onNextPressed() {
-    controller.setCpf(_tCpf.text);
+    controller.setCpf(mask.magicMask.clearMask(_tCpf.text));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: cpfValidator(_tCpf.text) ? _onNextPressed : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -61,6 +66,11 @@ class _UserCPFScreenState extends State<UserCPFScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tCpf,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {});
+                },
+                inputFormatters: [mask],
                 labelText: 'CPF',
               ),
             )

@@ -74,6 +74,7 @@ class _UserAddressScreenState extends State<UserAddressScreen> {
               CustomTextFieldWidget(
                 controller: _tNumber,
                 labelText: 'Número',
+                keyboardType: TextInputType.number,
                 hintText: 'Nº 234',
               ),
               CustomTextFieldWidget(

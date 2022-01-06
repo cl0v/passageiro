@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/user/registration/provider.dart';
 import 'package:passageiro/src/pages/user/registration/screens/address.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
+import 'package:passageiro/src/screens/success.dart';
 
 import 'controller.dart';
 import 'screens/cep.dart';
@@ -39,7 +41,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
       ),
       body: StreamBuilder<UserRegistrationState>(
         stream: controller.stream,
-        initialData: UserRegistrationState.pinConfirmation,
+        initialData: UserRegistrationState.name,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorScreen(
@@ -93,6 +95,17 @@ class _StateHandler extends StatelessWidget {
         break;
       case UserRegistrationState.pinConfirmation:
         result = const UserRegistrationPinConfirmationScreen();
+        break;
+      case UserRegistrationState.loading:
+        result = const LoadingScreen();
+        break;
+      case UserRegistrationState.success:
+        result = SucessScreen(
+          text: 'Parabens! Cadastro completo!',
+          onPressed: () {
+            pop(context);
+          },
+        );
         break;
     }
     return result;

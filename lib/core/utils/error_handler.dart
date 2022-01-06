@@ -3,15 +3,15 @@ class CustomError {
   final String message;
 
   /// Código do erro.
-  final int? code;
+  final String? code;
 
   CustomError({
     required this.message,
-    this.code,
-  });
+    int? code,
+  }) : code = code != null ? ' ($code)' : '';
 
   @override
   String toString() {
-    return '$message ($code)';
+    return '$message${code ?? "."}';
   }
 }

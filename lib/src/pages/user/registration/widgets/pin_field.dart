@@ -11,8 +11,8 @@ class PinFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   final TextEditingController controller;
-  final Function(String) onChanged;
   final void Function(String)? onDone;
+  final Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {

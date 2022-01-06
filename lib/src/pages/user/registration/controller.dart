@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:passageiro/core/utils/bloc.dart';
+import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/user/registration/models.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
@@ -63,6 +64,20 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
 
   bool checkPin(String pin) {
     return _viewModel.pin == pin;
+  }
+
+  void finish() {
+    //TODO: Implementar finalizacao do cadastro
+    add(UserRegistrationState.loading);
+    if (_register()) {
+      add(UserRegistrationState.success);
+    } else {
+      addError(CustomError(message: 'Algo deu errado'));
+    }
+  }
+
+  bool _register() {
+    return false;
   }
 
   void onContinuePressed() {

@@ -61,6 +61,7 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
               child: CustomTextFieldWidget(
                 controller: _tEmail,
                 labelText: 'Email',
+                hintText: 'mariaantonieta@gmail.com',
               ),
             )
           ],

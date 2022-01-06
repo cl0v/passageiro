@@ -5,6 +5,7 @@ import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
+import '../validators.dart';
 
 class UserNameScreen extends StatefulWidget {
   const UserNameScreen({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: nameValidator(_tName.text) ? _onNextPressed : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,7 +61,11 @@ class _UserNameScreenState extends State<UserNameScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tName,
+                onChanged: (value) {
+                  setState(() {});
+                },
                 labelText: 'Nome',
+                hintText: 'Maria Antonieta',
               ),
             )
           ],

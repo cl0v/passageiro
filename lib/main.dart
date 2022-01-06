@@ -7,8 +7,15 @@ import 'src/pages/user/pre-registration/view.dart';
 import 'src/pages/user/registration/provider.dart';
 import 'src/routes/routes.dart';
 
-//TODO: Implementar proxima página
-//TODO: Implementar página anterior
+
+// TODO: Quando vai da página de endereço para as fotos, o teclado dá um bug de overflow na pagina de fotos
+
+//TODO: (Desativar botao)  Adicionar validador
+//TODO: (Desativar botao)  Adicionar validador no campo cpf
+//TODO: (Desativar botao)  Adicionar validador no campo email
+//TODO: (Desativar botao)  Adicionar validador no campo cpf
+//TODO: (Desativar botao)  Adicionar validador no campo nome 
+
 
 void main() {
   runApp(const MyApp());

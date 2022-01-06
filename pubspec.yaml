@@ -39,6 +39,7 @@ dependencies:
   mask_text_input_formatter: 
   image_picker: ^0.8.4+4
   pin_code_text_field: ^1.8.0
+  easy_mask:
   syncfusion_flutter_pdfviewer: ^19.4.41-beta
   path_provider: 
   pin_code_fields: ^7.3.0
