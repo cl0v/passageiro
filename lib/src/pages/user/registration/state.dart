@@ -6,4 +6,5 @@ enum UserRegistrationState {
   address,
   picture,
   pin,
+  pinConfirmation,
 }

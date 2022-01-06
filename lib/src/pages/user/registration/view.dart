@@ -11,6 +11,8 @@ import 'screens/cpf.dart';
 import 'screens/email.dart';
 import 'screens/name.dart';
 import 'screens/pictures.dart';
+import 'screens/pin.dart';
+import 'screens/pin_confirmation.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   const UserRegistrationPage({Key? key}) : super(key: key);
@@ -37,7 +39,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
       ),
       body: StreamBuilder<UserRegistrationState>(
         stream: controller.stream,
-        initialData: UserRegistrationState.picture,
+        initialData: UserRegistrationState.pinConfirmation,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorScreen(
@@ -87,7 +89,10 @@ class _StateHandler extends StatelessWidget {
         result = const UserRegistrationPicturesScreen();
         break;
       case UserRegistrationState.pin:
-        // TODO: Handle this case.
+        result = const UserRegistrationPinScreen();
+        break;
+      case UserRegistrationState.pinConfirmation:
+        result = const UserRegistrationPinConfirmationScreen();
         break;
     }
     return result;

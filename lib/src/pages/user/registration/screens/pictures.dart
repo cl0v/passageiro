@@ -5,8 +5,9 @@ import 'package:passageiro/src/widgets/fab.dart';
 
 import '../controller.dart';
 import '../provider.dart';
+import '../viewmodel.dart';
 
-final _values = [
+const _values = [
   'selfie',
   'front',
   'back',
@@ -24,10 +25,11 @@ var _state = {
   _values[2]: false,
 };
 
-enum DocumentType {
-  RG,
-  CNH,
-}
+var _files = <String, XFile?>{
+  _values[0]: null,
+  _values[1]: null,
+  _values[2]: null,
+};
 
 class UserRegistrationPicturesScreen extends StatefulWidget {
   const UserRegistrationPicturesScreen({Key? key}) : super(key: key);
@@ -39,8 +41,9 @@ class UserRegistrationPicturesScreen extends StatefulWidget {
 
 class _UserRegistrationPicturesScreenState
     extends State<UserRegistrationPicturesScreen> {
-  DocumentType documentType = DocumentType.RG;
   late final UserRegistrationController controller;
+
+  DocumentType documentType = DocumentType.RG;
 
   @override
   void didChangeDependencies() {
@@ -48,20 +51,32 @@ class _UserRegistrationPicturesScreenState
     super.didChangeDependencies();
   }
 
-  _onNextPressed() {}
+  get available => !_files.values.contains(null);
 
-  _onTap(String title) {
-    ImagePicker().pickImage(source: ImageSource.camera);
-    setState(() {
-      _state[title] = !_state[title]!;
+  _onNextPressed() {
+    _files.values.firstWhere((element) => element == null, orElse: () {
+      controller.setImages(_files.values.map((e) => e!).toList());
+      controller.setDocumentType(documentType);
+      controller.onContinuePressed();
     });
+  }
+
+  _onTap(String title) async {
+    final file = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (file != null) {
+      _files[title] = file;
+      setState(() {
+        _state[title] = !_state[title]!;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: available ? _onNextPressed : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

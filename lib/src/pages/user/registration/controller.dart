@@ -1,15 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:passageiro/core/utils/bloc.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/user/registration/models.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
 import 'package:passageiro/src/pages/user/registration/viewmodel.dart';
 
+//TODO: Substituir _nextPage nas telas
+
 class UserRegistrationController extends Bloc<UserRegistrationState> {
   late final _viewModel = UserRegistrationViewModel();
 
   int _pageIndex = 0;
-
 
   void setName(String name) {
     _viewModel.name = name;
@@ -37,6 +41,31 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
       number: number,
       complement: complement,
     );
+    _nextPage();
+  }
+
+  void setImages(List<XFile> images) async {
+    final uintSelfie = await images[0].readAsBytes();
+    final uintFront = await images[1].readAsBytes();
+    final uintBack = await images[2].readAsBytes();
+    _viewModel.selfie = base64Encode(uintSelfie);
+    _viewModel.front = base64Encode(uintFront);
+    _viewModel.back = base64Encode(uintBack);
+  }
+
+  void setDocumentType(DocumentType documentType) {
+    _viewModel.documentType = documentType;
+  }
+
+  void setPin(String pin) {
+    _viewModel.pin = pin;
+  }
+
+  bool checkPin(String pin) {
+    return _viewModel.pin == pin;
+  }
+
+  void onContinuePressed() {
     _nextPage();
   }
 
