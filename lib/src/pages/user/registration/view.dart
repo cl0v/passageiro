@@ -46,9 +46,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
           if (snapshot.hasError) {
             return ErrorScreen(
               text: snapshot.error.toString(),
-              onPressed: () {
-                //TODO: OnTap
-              },
+              onPressed: () => controller.tryAgain(context, () => pop(context)),
             );
           }
           if (!snapshot.hasData) {

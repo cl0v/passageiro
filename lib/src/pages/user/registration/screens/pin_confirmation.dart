@@ -57,7 +57,7 @@ class _UserRegistrationPinConfirmationScreenState
     return Scaffold(
       floatingActionButton: CustomFabExtended(
         label: done,
-        onPressed: available ? onDonePressed : null,
+        onPressed: checked && available ? onDonePressed : null,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(

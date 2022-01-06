@@ -1,6 +1,7 @@
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/intl/strings.dart';
+import 'package:passageiro/src/pages/user/registration/validators.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
@@ -47,7 +48,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: cepValidator(_tCEP.text) ? _onNextPressed : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -64,6 +65,10 @@ class _UserCepScreenState extends State<UserCepScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tCEP,
+                keyboardType: TextInputType.number,
+                onChanged: (_) {
+                  setState(() {});
+                },
                 labelText: 'CEP',
                 inputFormatters: [mask],
               ),

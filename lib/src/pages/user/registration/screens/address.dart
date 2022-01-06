@@ -5,6 +5,7 @@ import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
 import '../provider.dart';
+import '../validators.dart';
 
 class UserAddressScreen extends StatefulWidget {
   const UserAddressScreen({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _UserAddressScreenState extends State<UserAddressScreen> {
     super.dispose();
   }
 
-  _onNextPressed() {
+  Function()? _onNextPressed() {
     controller.setAddress(
       _tStreet.text,
       _tNumber.text,
@@ -52,7 +53,9 @@ class _UserAddressScreenState extends State<UserAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: streetValidator(_tStreet.text) && numValidator(_tNumber.text)
+            ? _onNextPressed
+            : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -69,11 +72,17 @@ class _UserAddressScreenState extends State<UserAddressScreen> {
               CustomTextFieldWidget(
                 controller: _tStreet,
                 labelText: 'Rua',
+                onChanged: (_) {
+                  setState(() {});
+                },
                 hintText: 'Rua Antonio Freitas da Silva',
               ),
               CustomTextFieldWidget(
                 controller: _tNumber,
                 labelText: 'Número',
+                onChanged: (_) {
+                  setState(() {});
+                },
                 keyboardType: TextInputType.number,
                 hintText: 'Nº 234',
               ),

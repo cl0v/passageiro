@@ -5,9 +5,10 @@ import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
 import '../provider.dart';
+import '../validators.dart';
 
 class UserEmailScreen extends StatefulWidget {
- const UserEmailScreen({Key? key}) : super(key: key);
+  const UserEmailScreen({Key? key}) : super(key: key);
 
   @override
   State<UserEmailScreen> createState() => _UserEmailScreenState();
@@ -43,7 +44,7 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: _onNextPressed,
+        onPressed: emailValidator(_tEmail.text) ? _onNextPressed : null,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,6 +61,10 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
                 controller: _tEmail,
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (_) {
+                  setState(() {});
+                },
                 labelText: 'Email',
                 hintText: 'mariaantonieta@gmail.com',
               ),

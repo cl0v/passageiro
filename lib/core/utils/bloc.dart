@@ -40,6 +40,6 @@ class Bloc<T> implements IBloc<T, Object> {
   }
 
 
-  // tryAgain(context) => _lastBeforeError == null ? pop(context):
-  //    _controller.add(_lastBeforeError);
+  tryAgain(context, onPop) => _lastBeforeError == null ? onPop(context):
+     _controller.add(_lastBeforeError);
 }
