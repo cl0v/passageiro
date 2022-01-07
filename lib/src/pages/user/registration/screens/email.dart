@@ -27,6 +27,7 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    _tEmail.text = controller.viewModel.email;
     super.didChangeDependencies();
   }
 
@@ -37,7 +38,8 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
   }
 
   _onNextPressed() {
-    controller.setEmail(_tEmail.text);
+    controller.viewModel.email = _tEmail.text;
+    controller.onContinuePressed();
   }
 
   @override

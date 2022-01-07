@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
 import 'models.dart';
 
 enum DocumentType {
@@ -6,16 +10,16 @@ enum DocumentType {
 }
 
 class UserRegistrationViewModel {
-  late String name;
-  late String email;
-  late String cpf;
-  late String cep;
-  late Address address;
-  late String selfie;
-  late String front;
-  late String back;
-  late DocumentType documentType;
-  late String pin = '4444';
+  late String name = kDebugMode ? 'MArcelo Viana' : '';
+  late String email = kDebugMode ? 'marcelofv12@hotmail.com' : '';
+  late String cpf = kDebugMode ? '09847031606' : '';
+  late String cep = kDebugMode ? '39890000' : '';
+  late Address address = mockedAddress;
+  late DocumentType documentType = DocumentType.RG;
+  late String selfie = kDebugMode ? 'asas' : '';
+  late String front = kDebugMode ? 'asas' : '';
+  late String back = kDebugMode ? 'asas' : '';
+  late String pin = kDebugMode ? '0000' : '';
 
   Map<String, Object> toServerMap() => {
         'name': name,
@@ -31,9 +35,18 @@ class UserRegistrationViewModel {
         'city': address.city,
         'country': address.country,
         'pin': pin,
-        'documentImageType': documentType,
+        'documentImageType': documentTypeConverter(documentType),
         'documentImageBack': 'data:image/jpeg;base64,$back',
         'documentImageFront': 'data:image/jpeg;base64,$front',
         'faceImage': 'data:image/jpeg;base64,$selfie',
       };
+
+  String documentTypeConverter(DocumentType type) {
+    switch (type) {
+      case DocumentType.CNH:
+        return 'CNH';
+      case DocumentType.RG:
+        return 'NEWRG';
+    }
+  }
 }

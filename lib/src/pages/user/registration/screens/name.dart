@@ -27,6 +27,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    _tName.text = controller.viewModel.name;
     super.didChangeDependencies();
   }
 
@@ -37,7 +38,8 @@ class _UserNameScreenState extends State<UserNameScreen> {
   }
 
   _onNextPressed() {
-    controller.setName(_tName.text);
+    controller.viewModel.name = _tName.text;
+    controller.onContinuePressed();
   }
 
   @override

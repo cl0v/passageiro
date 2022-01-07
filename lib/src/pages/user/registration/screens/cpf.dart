@@ -32,6 +32,7 @@ class _UserCPFScreenState extends State<UserCPFScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    _tCpf.text = mask.magicMask.getMaskedString(controller.viewModel.cpf);
     super.didChangeDependencies();
   }
 

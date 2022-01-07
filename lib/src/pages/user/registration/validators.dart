@@ -3,7 +3,7 @@ bool nameValidator(String name) {
 }
 
 bool cepValidator(String cep) {
-  return !(cep.length <= 9);
+  return !(cep.length <= 8);
 }
 
 bool streetValidator(String street) {

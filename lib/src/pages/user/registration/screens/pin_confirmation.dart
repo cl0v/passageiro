@@ -29,6 +29,7 @@ class _UserRegistrationPinConfirmationScreenState
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    pinController.text = controller.viewModel.pin;
     super.didChangeDependencies();
   }
 

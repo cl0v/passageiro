@@ -1,3 +1,7 @@
+enum ApiLevel {
+  V1,
+  V2,
+}
 
 abstract class IHttpClient {
   setHeader(Map<String, String> headers);
@@ -17,4 +21,10 @@ abstract class IHttpClient {
     dynamic body,
     Map<String, dynamic>? queryParameters,
   });
+
+  Future<dynamic> put(
+    ApiLevel version,
+    String path,
+    String body,
+  );
 }

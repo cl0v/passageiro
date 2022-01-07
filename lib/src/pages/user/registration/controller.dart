@@ -8,36 +8,42 @@ import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/user/registration/models.dart';
 import 'package:passageiro/src/pages/user/registration/state.dart';
 import 'package:passageiro/src/pages/user/registration/viewmodel.dart';
+import 'package:passageiro/src/pages/user/repository.dart';
+import 'package:passageiro/src/services/http_client.dart';
 
 //TODO: Substituir _nextPage nas telas
 
 class UserRegistrationController extends Bloc<UserRegistrationState> {
-  late final _viewModel = UserRegistrationViewModel();
+  UserRegistrationController({required this.repository});
+
+  late final viewModel = UserRegistrationViewModel();
+
+  final UserRepository repository;
 
   int _pageIndex = 0;
 
   void setName(String name) {
-    _viewModel.name = name;
+    viewModel.name = name;
     _nextPage();
   }
 
   void setCpf(String cpf) {
-    _viewModel.cpf = cpf;
+    viewModel.cpf = cpf;
     _nextPage();
   }
 
   void setCep(String cep) {
-    _viewModel.cep = cep;
+    viewModel.cep = cep;
     _nextPage();
   }
 
   void setEmail(String email) {
-    _viewModel.email = email;
+    viewModel.email = email;
     _nextPage();
   }
 
   void setAddress(String street, String number, String complement) {
-    _viewModel.address = Address(
+    viewModel.address = Address(
       street: street,
       number: number,
       complement: complement,
@@ -49,34 +55,32 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
     final uintSelfie = await images[0].readAsBytes();
     final uintFront = await images[1].readAsBytes();
     final uintBack = await images[2].readAsBytes();
-    _viewModel.selfie = base64Encode(uintSelfie);
-    _viewModel.front = base64Encode(uintFront);
-    _viewModel.back = base64Encode(uintBack);
+    viewModel.selfie = base64Encode(uintSelfie);
+    viewModel.front = base64Encode(uintFront);
+    viewModel.back = base64Encode(uintBack);
   }
 
   void setDocumentType(DocumentType documentType) {
-    _viewModel.documentType = documentType;
+    viewModel.documentType = documentType;
   }
 
   void setPin(String pin) {
-    _viewModel.pin = pin;
+    viewModel.pin = pin;
   }
 
   bool checkPin(String pin) {
-    return _viewModel.pin == pin;
+    return viewModel.pin == pin;
   }
 
   void finish() async {
     add(UserRegistrationState.loading);
     try {
-      // TODO: Adicionar chamada no endpoint para cadastrar.
-      // Tenta criar o cadastro
+      await repository.register(viewModel);
       add(UserRegistrationState.success);
     } catch (e) {
       addError(e as CustomError);
     }
   }
-
 
   void onContinuePressed() {
     _nextPage();

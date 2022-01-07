@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Address {
   final String street;
   final String number;
@@ -18,3 +20,9 @@ class Address {
     this.country = 'BR',
   });
 }
+
+Address mockedAddress = kDebugMode? Address(
+  street: 'street',
+  number: '111',
+  complement: 'complement',
+) : Address(street: 'street', number: '111', complement: 'complement');

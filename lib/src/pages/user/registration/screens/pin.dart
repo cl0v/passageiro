@@ -27,6 +27,7 @@ class _UserRegistrationPinScreenState extends State<UserRegistrationPinScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    pinController.text = controller.viewModel.pin;
     super.didChangeDependencies();
   }
 

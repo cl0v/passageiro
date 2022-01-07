@@ -31,6 +31,7 @@ class _UserCepScreenState extends State<UserCepScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    _tCEP.text = mask.magicMask.getMaskedString(controller.viewModel.cep);
     super.didChangeDependencies();
   }
 

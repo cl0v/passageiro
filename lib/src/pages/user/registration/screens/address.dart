@@ -32,6 +32,9 @@ class _UserAddressScreenState extends State<UserAddressScreen> {
   @override
   void didChangeDependencies() {
     controller = UserRegistrationProvider.of(context)!;
+    _tStreet.text = controller.viewModel.address.street;
+    _tNumber.text = controller.viewModel.address.number;
+    _tComplement.text = controller.viewModel.address.complement;
     super.didChangeDependencies();
   }
 

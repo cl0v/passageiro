@@ -6,6 +6,8 @@ import 'package:passageiro/src/pages/user/pre-registration/view.dart';
 import 'package:passageiro/src/pages/user/registration/controller.dart';
 import 'package:passageiro/src/pages/user/registration/provider.dart';
 import 'package:passageiro/src/pages/user/registration/view.dart';
+import 'package:passageiro/src/pages/user/repository.dart';
+import 'package:passageiro/src/services/http_client.dart';
 
 class Routes {
   static final Map<String, Widget Function(BuildContext)> routes = {
@@ -14,9 +16,14 @@ class Routes {
           controller: UserPreRegistrationController(),
           child: const UserPreRegistrationPage(),
         ),
+        
     UserRegistrationProvider.route: (context) => UserRegistrationProvider(
           child: const UserRegistrationPage(),
-          controller: UserRegistrationController(),
+          controller: UserRegistrationController(
+            repository: UserRepository(
+              http: HttpClientService(),
+            ),
+          ),
         ),
   };
 }
