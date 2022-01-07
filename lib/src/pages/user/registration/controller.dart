@@ -66,19 +66,17 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
     return _viewModel.pin == pin;
   }
 
-  void finish() {
-    //TODO: Implementar finalizacao do cadastro
+  void finish() async {
     add(UserRegistrationState.loading);
-    if (_register()) {
+    try {
+      // TODO: Adicionar chamada no endpoint para cadastrar.
+      // Tenta criar o cadastro
       add(UserRegistrationState.success);
-    } else {
-      addError(CustomError(message: 'Algo deu errado'));
+    } catch (e) {
+      addError(e as CustomError);
     }
   }
 
-  bool _register() {
-    return false;
-  }
 
   void onContinuePressed() {
     _nextPage();
