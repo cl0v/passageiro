@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,9 +54,16 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
   }
 
   void setImages(List<XFile> images) async {
-    final uintSelfie = await images[0].readAsBytes();
-    final uintFront = await images[1].readAsBytes();
-    final uintBack = await images[2].readAsBytes();
+
+    List<File> fileImages = [];
+    
+    for (XFile img in images) {
+      fileImages.add(await viewModel.compressFile(File(img.path)));
+    }
+
+    final uintSelfie = await fileImages[0].readAsBytes();
+    final uintFront = await fileImages[1].readAsBytes();
+    final uintBack = await fileImages[2].readAsBytes();
     viewModel.selfie = base64Encode(uintSelfie);
     viewModel.front = base64Encode(uintFront);
     viewModel.back = base64Encode(uintBack);

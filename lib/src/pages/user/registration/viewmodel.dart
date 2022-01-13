@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 import 'models.dart';
 
@@ -41,7 +43,20 @@ class UserRegistrationViewModel {
         'faceImage': 'data:image/jpeg;base64,$selfie',
       };
 
-      
+  Future<File> compressFile(File file) async {
+    late File compressedFile;
+    int percentage = 30;
+    do {
+      if (percentage >= 100) break;
+      compressedFile = await FlutterNativeImage.compressImage(
+        file.path,
+        percentage: percentage,
+        quality: percentage,
+      );
+      percentage += 5;
+    } while ((await compressedFile.length()) < 70000);
+    return compressedFile;
+  }
 
   String documentTypeConverter(DocumentType type) {
     switch (type) {

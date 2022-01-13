@@ -16,7 +16,7 @@ class Address {
     //TODO: Implementar sistema de encontrar o bairro através do cpf
     this.neighborhood = 'Centro',
     this.city = 'Toledo',
-    this.state = '',
+    this.state = 'PR', //TODO: Remover o estado de forma hardcoded
     this.country = 'BR',
   });
 }

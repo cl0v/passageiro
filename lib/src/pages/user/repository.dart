@@ -23,7 +23,7 @@ class UserRepository implements IUserPreRegistrationRepository {
   Future<void> register(UserRegistrationViewModel registration) async {
     try {
       //TODO: Só de fazer o put da certo, mesmo com status code diferente
-      final response = await http.put(ApiLevel.v2, 'api/signUp/complete',
+      final response = await http.put(ApiLevel.v2, httpUserCompleteSignUp,
           jsonEncode(registration.toServerMap()));
       if (response.statusCode != 200) {
         throw CustomError(message: 'Não foi possível concluir o cadastro');
