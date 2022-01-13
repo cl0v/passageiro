@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/user/pre-registration/screens/success.dart';
+import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
 import 'screens/nickname.dart';
 import 'screens/phone.dart';
@@ -19,11 +21,11 @@ class UserPreRegistrationPage extends StatefulWidget {
 }
 
 class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
-  late final UserPreRegistrationController controller;
+  late UserPreRegistrationController controller;
 
   @override
   void didChangeDependencies() {
-    controller = UserPreRegistrationProvider.of(context)!;
+    controller = UserPreRegistrationProvider.of(context)!..init(context);
     super.didChangeDependencies();
   }
 
@@ -36,15 +38,22 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => controller.onBackPressed(context),
+        ),
+      ),
       body: StreamBuilder<UserPreRegistrationState>(
         stream: controller.stream,
         initialData: UserPreRegistrationState.values.first,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return ErrorScreen(
               //TODO: Printar o erro de forma correta com base no error handler!
-              child: Text(snapshot.error.toString()),
+              text: snapshot.error.toString(),
+              onPressed: ()=> controller.tryAgain(context, () {
+                pop(context);
+              }),
             );
           }
           if (!snapshot.hasData) {

@@ -1,40 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/bloc.dart';
+import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/src/pages/home/provider.dart';
 import 'package:passageiro/src/pages/user/pre-registration/viewmodel.dart';
+import 'package:passageiro/src/pages/user/registration/provider.dart';
 
+import '../interface.dart';
 import 'state.dart';
 
 class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
-  final _viewModel = UserPreRegistrationViewModel();
+  final viewModel = UserPreRegistrationViewModel();
 
-  // PageController controller = PageController();
+  late final IUserPreRegistrationRepository repository;
 
-  // next() => controller.nextPage(
-  //     duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-  // back() => controller.previousPage(
-  //     duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+  UserPreRegistrationController({required this.repository})
+      : super(loadingState: UserPreRegistrationState.loading);
 
-  Function verifyCode(BuildContext context, String code) {
+  late final BuildContext context;
+  init(BuildContext context) {
+    this.context = context;
+  }
+
+  verifyCode(String code) async {
     //TODO: Implementar verificação de código.
-    _viewModel.code = code;
-    return () {};
+    viewModel.code = code;
+    add(UserPreRegistrationState.loading);
+    try {
+      if (await repository.verifyCode(viewModel)) {
+        pushNamed(context, UserRegistrationProvider.route, replace: true);
+      } else {
+        addError(
+            CustomError(message: 'O código de verificação está incorreto'));
+      }
+    } catch (e, s) {
+      debugPrint('$e\n$s');
+      addError(
+        CustomError(message: 'Ocorreu um error com o cadastro'),
+      );
+    }
   }
 
-  _onCodeVerificationSucess(BuildContext context) {
-    pushNamed(context, HomeProvider.route);
-  }
-
-  _onCodeVerificationFailed() {}
-
-  void setPhone(String phone) {
-    _viewModel.phone = phone;
-    add(UserPreRegistrationState.code);
+  void setPhone(String phone) async {
+    viewModel.phone = phone;
+    try {
+      add(UserPreRegistrationState.loading);
+      await repository.sendCode(int.parse(phone));
+      onContinuePressed();
+    } catch (e) {
+      addError(CustomError(message: 'Número de telefone inválido'));
+    }
   }
 
   void setNickname(String nickname) {
-    _viewModel.nickname = nickname;
-    add(UserPreRegistrationState.phone);
+    viewModel.nickname = nickname;
+    onContinuePressed();
+  }
+
+  int _pageIndex = 0;
+
+  onBackPressed(BuildContext context) {
+    if (_pageIndex > 0) {
+      add(UserPreRegistrationState.values[--_pageIndex]);
+    } else {
+      pop(context);
+    }
+  }
+
+  onContinuePressed() {
+    add(UserPreRegistrationState.values[++_pageIndex]);
   }
 }

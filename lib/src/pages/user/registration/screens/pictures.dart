@@ -82,57 +82,59 @@ class _UserRegistrationPicturesScreenState
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          children: [
-            Text(
-              'Envie uma foto dos seguintes documentos.',
-              style: Theme.of(context).textTheme.headline5,
-              textAlign: TextAlign.start,
-            ),
-            ..._values
-                .map(
-                  (e) => Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.upload_rounded),
-                        trailing: _state[e] ?? false
-                            ? const Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              )
-                            : const Icon(
-                                Icons.warning_rounded,
-                                color: Colors.yellow,
-                              ),
-                        onTap: () => _onTap(e),
-                        title: Text(_titles[e]!),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'Envie uma foto dos seguintes documentos.',
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.start,
+              ),
+              ..._values
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.upload_rounded),
+                          trailing: _state[e] ?? false
+                              ? const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
+                              : const Icon(
+                                  Icons.warning_rounded,
+                                  color: Colors.yellow,
+                                ),
+                          onTap: () => _onTap(e),
+                          title: Text(_titles[e]!),
+                        ),
                       ),
                     ),
-                  ),
-                )
-                .toList(),
-            RadioListTile<DocumentType>(
-              value: DocumentType.RG,
-              groupValue: documentType,
-              onChanged: (DocumentType? type) {
-                setState(() {
-                  documentType = type ?? documentType;
-                });
-              },
-              title: const Text('Identidade'),
-            ),
-            RadioListTile<DocumentType>(
-              value: DocumentType.CNH,
-              groupValue: documentType,
-              onChanged: (DocumentType? type) {
-                setState(() {
-                  documentType = type ?? documentType;
-                });
-              },
-              title: const Text('Carteira de motorista'),
-            ),
-          ],
+                  )
+                  .toList(),
+              RadioListTile<DocumentType>(
+                value: DocumentType.RG,
+                groupValue: documentType,
+                onChanged: (DocumentType? type) {
+                  setState(() {
+                    documentType = type ?? documentType;
+                  });
+                },
+                title: const Text('Identidade'),
+              ),
+              RadioListTile<DocumentType>(
+                value: DocumentType.CNH,
+                groupValue: documentType,
+                onChanged: (DocumentType? type) {
+                  setState(() {
+                    documentType = type ?? documentType;
+                  });
+                },
+                title: const Text('Carteira de motorista'),
+              ),
+            ],
+          ),
         ),
       ),
     );

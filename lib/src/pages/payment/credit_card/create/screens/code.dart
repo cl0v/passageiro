@@ -1,129 +1,145 @@
-// import 'package:flutter/material.dart';
-// import 'package:passageiro/core/intl/strings.dart';
-// import 'package:passageiro/src/widgets/fab.dart';
 
-// class CreditCardDateScreen extends StatefulWidget {
-//   const CreditCardDateScreen({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:passageiro/core/intl/strings.dart';
+import 'package:passageiro/src/widgets/fab.dart';
 
-//   @override
-//   _CreditCardDateScreenState createState() => _CreditCardDateScreenState();
-// }
+import '../provider.dart';
 
-// class _CreditCardDateScreenState extends State<CreditCardDateScreen> {
-//   late final TextEditingController tDate;
+class CreditCardCreationCodeScreen extends StatelessWidget {
+  const CreditCardCreationCodeScreen({Key? key}) : super(key: key);
 
-//   late final CreditCardCreationController controller;
-//   late final TextTheme textTheme;
+  @override
+  Widget build(BuildContext context) {
+    final controller = CreditCardCreationProvider.of(context)!;
+    final initalValue = controller.code;
+    return CreditCardCodeScreen(
+      initialValue: initalValue,
+      onBack: controller.previous,
+      onSubmit: controller.setCode,
+    );
+  }
+}
 
-//   final mask = CustomMasks.expirationDateMask;
 
-//   bool isValid = false;
 
-//   @override
-//   void initState() {
-//     tDate = TextEditingController();
-//     super.initState();
-//   }
+class CreditCardCodeScreen extends StatefulWidget {
+  const CreditCardCodeScreen({
+    Key? key,
+    required this.initialValue,
+    required this.onSubmit,
+    this.onBack,
+  }) : super(key: key);
 
-//   @override
-//   void didChangeDependencies() {
-//     controller = CreditCardCreationProvider.of(context).controller;
-//     tDate.text = controller.date ?? '';
-//     isValid = controller.date != null;
-//     textTheme = Theme.of(context).textTheme;
-//     super.didChangeDependencies();
-//   }
+  final String initialValue;
+  final Function(String value) onSubmit;
+  final VoidCallback? onBack;
 
-//   @override
-//   void dispose() {
-//     tDate.dispose();
-//     super.dispose();
-//   }
+  @override
+  _CreditCardCodeScreenState createState() => _CreditCardCodeScreenState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       floatingActionButton: CustomFabExtended(
-//         label: next,
-//         onPressed: isValid ? () => controller.setDate(tDate.text) : null,
-//       ),
-//       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-//       appBar: AppBar(
-//         leading: BackButton(
-//           onPressed: controller.previous,
-//         ),
-//       ),
-//       body: SafeArea(
-//           minimum: const EdgeInsets.symmetric(horizontal: 24.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text('Insira a data de validade do cartão',
-//                   style: textTheme.headline2),
-//               const Spacer(
-//                 flex: 1,
-//               ),
-//               Row(
-//                 children: [
-//                   const Spacer(),
-//                   Flexible(
-//                     flex: 2,
-//                     child: TextField(
-//                       controller: tDate,
-//                       autofocus: true,
-//                       inputFormatters: [mask],
-//                       keyboardType: TextInputType.number,
-//                       textAlign: TextAlign.center,
-//                       decoration: const InputDecoration(hintText: '06/25'),
-//                       textInputAction: TextInputAction.send,
-//                       style: textTheme.bodyText1,
-//                       onChanged: validate,
-//                     ),
-//                   ),
-//                   const Spacer(
-//                     flex: 1,
-//                   ),
-//                 ],
-//               ),
-//               const Flexible(
-//                 child: SizedBox(
-//                   height: 34,
-//                 ),
-//               ),
-//               const Spacer(
-//                 flex: 2,
-//               ),
-//             ],
-//           )),
-//     );
-//   }
+class _CreditCardCodeScreenState extends State<CreditCardCodeScreen> {
+  final TextEditingController tCode = TextEditingController();
 
-//   validate(String value) {
-//     if (value.length <= 4) {
-//       if (isValid) {
-//         setState(() {
-//           isValid = false;
-//         });
-//       }
-//       return;
-//     }
-//     DateFormat _cardDateFormat = DateFormat('MM/yy');
-//     try {
-//       if (int.parse(value.substring(0, 2)) > 12) {
-//         return false;
-//       }
-//       DateTime date = _cardDateFormat
-//           .parse('${value.substring(0, 3)}20${value.substring(3, 5)}');
-//       DateTime now = DateTime.now();
-//       bool valid = now.isBefore(date) ||
-//           (now.month == date.month && now.year == date.year);
-//       setState(() {
-//         isValid = valid;
-//       });
-//     } catch (e) {
-//       setState(() {
-//         isValid = false;
-//       });
-//     }
-//   }
-// }
+  bool isValid = false;
+
+  @override
+  void initState() {
+    tCode.text = widget.initialValue;
+    isValid = widget.initialValue != '';
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tCode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: widget.onBack,
+        ),
+      ),
+      floatingActionButton: CustomFabExtended(
+        label: next,
+        onPressed: isValid
+            ? () {
+                widget.onSubmit.call(tCode.text);
+              }
+            : null,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Insira o código de segurança do cartão',
+              style: textTheme.headline2,
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                Flexible(
+                  child: TextField(
+                    autofocus: true,
+                    controller: tCode,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'\d')),
+                      LengthLimitingTextInputFormatter(4)
+                    ],
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    textInputAction: TextInputAction.send,
+                    style: textTheme.bodyText1,
+                    onChanged: validate,
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+            const Flexible(
+              child: SizedBox(
+                height: 34,
+              ),
+            ),
+            Center(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Onde está o código de\nsegurança do meu cartão?',
+                  style: textTheme.bodyText2,
+                ),
+              ),
+            ),
+            const Spacer(
+              flex: 3,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void validate(String value) {
+    if (value.length < 3) {
+      setState(() {
+        isValid = false;
+        return;
+      });
+    }
+    setState(() {
+      isValid = value.trim().length > 2;
+    });
+  }
+}

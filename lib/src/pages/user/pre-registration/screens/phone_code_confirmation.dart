@@ -41,7 +41,7 @@ class _UserPhoneCodeConfirmationScreenState
   }
 
   _onEnterPressed(BuildContext context) {
-    controller.verifyCode(context, _codeController.text).call();
+    controller.verifyCode(_codeController.text);
   }
 
   @override

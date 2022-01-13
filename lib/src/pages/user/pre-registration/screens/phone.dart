@@ -1,3 +1,4 @@
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:passageiro/core/intl/strings.dart';
@@ -16,9 +17,9 @@ class UserPhoneScreen extends StatefulWidget {
 }
 
 class _UserPhoneScreenState extends State<UserPhoneScreen> {
-  final MaskTextInputFormatter _phoneMaskFormatter = MaskTextInputFormatter(
-      mask: "(##) #####-####", filter: {"#": RegExp(r'[0-9]')});
-
+  late final TextEditingController _tPhone;
+  final mask = TextInputMask(mask: ['(99) 9999-9999', '(99) 99999-9999']);
+  
   bool terms = false;
   bool polices = false;
 
@@ -27,15 +28,27 @@ class _UserPhoneScreenState extends State<UserPhoneScreen> {
   @override
   void didChangeDependencies() {
     controller = UserPreRegistrationProvider.of(context)!;
+    _tPhone.text = mask.magicMask.getMaskedString(controller.viewModel.phone);
     super.didChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    _tPhone.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _tPhone = TextEditingController();
+    super.initState();
+  }
 
   _onTermsPressed() => pushNamed(context, PolicyPrivacyPage.route);
 
   _onContinue() {
     if (!(terms && polices)) return;
-    controller.setPhone(_phoneMaskFormatter.getUnmaskedText());
+    controller.setPhone(mask.magicMask.clearMask(_tPhone.text));
   }
 
   @override
@@ -58,9 +71,10 @@ class _UserPhoneScreenState extends State<UserPhoneScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 12),
               child: CustomTextFieldWidget(
-                inputFormatters: [_phoneMaskFormatter],
+                inputFormatters: [mask],
                 keyboardType: TextInputType.phone,
                 hintText: '(99) 987654321',
+                controller: _tPhone,
               ),
             ),
             CheckboxListTile(

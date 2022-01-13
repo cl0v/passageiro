@@ -11,7 +11,7 @@ bool streetValidator(String street) {
 }
 
 bool numValidator(String num) {
-  return !(num.length < 0);
+  return (num.length > 0);
 }
 
 bool emailValidator(String email) {

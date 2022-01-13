@@ -20,9 +20,6 @@ class CustomFabExtended extends StatelessWidget {
         label: Center(child: SizedBox(width: 300, child: Text(label, textAlign: TextAlign.center,),),),
       ),
     );
-    return FloatingActionButton.extended(
-      onPressed: () {},
-      label: Text(label),
-    );
+    
   }
 }

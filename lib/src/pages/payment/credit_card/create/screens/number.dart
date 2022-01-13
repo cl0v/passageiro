@@ -1,101 +1,102 @@
-// import 'package:flutter/material.dart';
-// import 'package:passageiro/src/widgets/fab.dart';
+import 'package:easy_mask/easy_mask.dart';
+import 'package:flutter/material.dart';
+import 'package:passageiro/core/intl/strings.dart';
+import 'package:passageiro/core/utils/masks.dart';
+import 'package:passageiro/src/widgets/fab.dart';
 
-// class CreditCardNumberScreen extends StatefulWidget {
-//   const CreditCardNumberScreen({Key key}) : super(key: key);
+import '../controller.dart';
+import '../provider.dart';
 
-//   @override
-//   _CreditCardNumberScreenState createState() => _CreditCardNumberScreenState();
-// }
+//TODO: Quando preenche todos os valores, não é possivel editar mais
 
-// class _CreditCardNumberScreenState extends State<CreditCardNumberScreen> {
-//   late final CreditCardCreationController controller;
-//   late final TextTheme textTheme;
+class CreditCardNumberScreen extends StatefulWidget {
+  const CreditCardNumberScreen({Key? key}) : super(key: key);
 
-//   late final TextEditingController tNum;
-//   final TextInputMask mask = CustomMasks.creditCardMask;
+  @override
+  _CreditCardNumberScreenState createState() => _CreditCardNumberScreenState();
+}
 
-//   bool isValid = false;
+class _CreditCardNumberScreenState extends State<CreditCardNumberScreen> {
+  late final CreditCardCreationController controller;
 
-//   @override
-//   void initState() {
-//     tNum = TextEditingController();
-//     super.initState();
-//   }
+  final TextEditingController tNum = TextEditingController();
+  final TextInputMask mask = CustomMasks.creditCardMask;
 
-//   @override
-//   void didChangeDependencies() {
-//     controller = CreditCardCreationProvider.of(context).controller;
-//     tNum.text = controller.number ?? '';
-//     isValid = controller.number != null;
-//     textTheme = Theme.of(context).textTheme;
-//     super.didChangeDependencies();
-//   }
+  bool isValid = false;
 
-//   @override
-//   void dispose() {
-//     tNum.dispose();
-//     super.dispose();
-//   }
+  @override
+  void didChangeDependencies() {
+    controller = CreditCardCreationProvider.of(context)!;
+    tNum.text = controller.number;
+    isValid = controller.number != '';
+    super.didChangeDependencies();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(),
-//       floatingActionButton: CustomFabExtended(
-//           label: 'Continuar',
-//           onPressed: isValid ? () => controller.setNumber(tNum.text) : null),
-//       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-//       body: SafeArea(
-//         minimum: const EdgeInsets.symmetric(horizontal: 24.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text('Insira o número do cartão de crédito',
-//                 style: textTheme.headline2),
-//             const Spacer(
-//               flex: 1,
-//             ),
-//             TextField(
-//               controller: tNum,
-//               autofocus: true,
-//               inputFormatters: [mask],
-//               keyboardType: TextInputType.number,
-//               textAlign: TextAlign.center,
-//               textInputAction: TextInputAction.send,
-//               decoration:
-//                   const InputDecoration(hintText: '0000 0000 0000 0000'),
-//               style: textTheme.bodyText1,
-//               onChanged: validate,
-//             ),
-//             const Flexible(
-//               child: SizedBox(
-//                 height: 34,
-//               ),
-//             ),
-//             const Spacer(
-//               flex: 3,
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
+  @override
+  void dispose() {
+    tNum.dispose();
+    super.dispose();
+  }
 
-//   void validate(String value) {
-//     if (value.length < '9999 9999 9999 9999'.length) {
-//       if (isValid) {
-//         setState(() {
-//           isValid = false;
-//         });
-//       }
-//       return;
-//     }
-//     final String txt = CustomMasks.clearMask(value, mask);
-//     var card = CreditCardValidator.getCard(txt);
-//     debugPrint(card[CreditCardValidator.cardType]);
-//     setState(() {
-//       isValid = luhn.validate(txt);
-//     });
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
+      appBar: AppBar(),
+      floatingActionButton: CustomFabExtended(
+          label: next,
+          onPressed: isValid ? () => controller.setNumber(tNum.text) : null),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Insira o número do cartão de crédito',
+                style: textTheme.headline2),
+            const Spacer(
+              flex: 1,
+            ),
+            TextField(
+              controller: tNum,
+              autofocus: true,
+              inputFormatters: [mask],
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              textInputAction: TextInputAction.send,
+              decoration:
+                  const InputDecoration(hintText: '0000 0000 0000 0000'),
+              style: textTheme.bodyText1,
+              onChanged: validate,
+            ),
+            const Flexible(
+              child: SizedBox(
+                height: 34,
+              ),
+            ),
+            const Spacer(
+              flex: 3,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void validate(String value) {
+    if (value.length < '9999 9999 9999 9999'.length) {
+      if (isValid) {
+        setState(() {
+          isValid = false;
+        });
+      }
+      return;
+    }
+    final String txt = CustomMasks.clearMask(value, mask);
+    // var card = CreditCardValidator.getCard(txt);
+    // debugPrint(card[CreditCardValidator.cardType]);
+    // setState(() {
+    //   isValid = luhn.validate(txt);
+    // });
+  }
+}

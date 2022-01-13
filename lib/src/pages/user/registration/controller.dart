@@ -14,7 +14,8 @@ import 'package:passageiro/src/services/http_client.dart';
 //TODO: Substituir _nextPage nas telas
 
 class UserRegistrationController extends Bloc<UserRegistrationState> {
-  UserRegistrationController({required this.repository});
+  UserRegistrationController({required this.repository})
+      : super(loadingState: UserRegistrationState.loading);
 
   late final viewModel = UserRegistrationViewModel();
 
@@ -100,5 +101,13 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
 
   _previousPage() {
     add(UserRegistrationState.values[--_pageIndex]);
+  }
+
+  Future<void> fetchAddress(String cep) async {
+    viewModel.cep = cep;
+    add(UserRegistrationState.loading);
+    final address = await repository.fetchAddress(cep);
+    if (address != null) viewModel.address = address;
+    add(UserRegistrationState.cep);
   }
 }

@@ -9,35 +9,57 @@ import 'alice_http_inspector.dart';
 class HttpClientService implements IHttpClient {
   final client = Client();
 
-  HttpClientService() {
-    print('Adicionado');
+  Map<String, String> _header = {
+    'Content-Type': 'application/json',
+  };
+
+  @override
+  Future<Response> get(String unencodedPath,
+      {String? authority, Map<String, dynamic>? queryParameters}) {
+    return client.get(
+      _getUri(
+        ApiLevel.v1,
+        unencodedPath,
+        authority,
+      ),
+      headers: _header,
+    )..then((response) {
+        alice.onHttpResponse(response);
+        return response;
+      });
+  }
+
+  Map<String, String> getHeader(String? body) {
+    if (body != null)
+      {return _header..addAll({'content-length': body.length.toString()});}
+    return _header;
   }
 
   @override
-  Future get(String unencodedPath,
-      {String? authority,
-      Map<String, String>? headers,
+  Future<Response> post(ApiLevel version, String path,
+      {bool headersRequired = true,
+      String? body,
       Map<String, dynamic>? queryParameters}) {
-    // TODO: implement get
-    throw UnimplementedError();
-  }
-
-  @override
-  Future post(String unencodedPath,
-      {String? authority,
-      Map<String, String>? headers,
-      bool headersRequired = true,
-      body,
-      Map<String, dynamic>? queryParameters}) {
-    // TODO: implement post
-    throw UnimplementedError();
+    try {
+      return client.post(
+        _getUri(version, path),
+        body: body,
+        headers: getHeader(body),
+      )..then((response) => {alice.onHttpResponse(response)});
+    } catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
   }
 
   @override
   Future<Response> put(ApiLevel version, String path, String body) async {
     try {
-      return client.put(_getUri(version, path), body: body)
-        ..then((response) {
+      return client.put(
+        _getUri(version, path),
+        body: body,
+        headers:  getHeader(body),
+      )..then((response) {
           alice.onHttpResponse(response);
         });
     } catch (e, s) {
@@ -46,24 +68,25 @@ class HttpClientService implements IHttpClient {
     }
   }
 
-  Uri _getUri(ApiLevel version, String unencodedPath) {
+  Uri _getUri(ApiLevel version, String unencodedPath, [String? url]) {
     late final String result;
 
     switch (version) {
-      case ApiLevel.V1:
+      case ApiLevel.v1:
         result = api;
         break;
-      case ApiLevel.V2:
+      case ApiLevel.v2:
         result = apiV2;
         break;
     }
 
-    return Uri.https(result, unencodedPath);
+    return Uri.https(url ?? result, unencodedPath);
   }
 
   @override
-  setHeader(Map<String, String> headers) {
-    // TODO: implement setHeader
-    throw UnimplementedError();
+  setAuthorization(String authorization) {
+    _header.addAll({
+      'authorization': 'Bearer $authorization',
+    });
   }
 }

@@ -41,6 +41,8 @@ class UserRegistrationViewModel {
         'faceImage': 'data:image/jpeg;base64,$selfie',
       };
 
+      
+
   String documentTypeConverter(DocumentType type) {
     switch (type) {
       case DocumentType.CNH:

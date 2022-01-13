@@ -1,83 +1,88 @@
 
-// import 'package:passageiro/core/utils/bloc.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:passageiro/core/utils/bloc.dart';
 
-// class CreditCardCreationController extends Bloc<CreditCardCreationState> {
-//   final ICreditCard repository;
+import '../model.dart';
+import 'state.dart';
 
-//   PageController pageController;
+class CreditCardCreationController extends Bloc<CreditCardCreationState> {
+  // final ICreditCard repository;
 
-//   BuyWithCard paymentInfo;
+  late PageController pageController;
 
-//   int pageIndex = 0;
+  // BuyWithCard paymentInfo;
 
-//   String number = kDebugMode ? '5178 6988 3475 9785' : null;
-//   String name = kDebugMode ? 'Maria Silva' : null;
-//   String date = kDebugMode ? '02/22' : null;
-//   String code = kDebugMode ? '255' : null;
+  int pageIndex = 0;
 
-//   CreditCardCreationController(this.repository);
+  String number = kDebugMode ? '5178 6988 3475 9785' : '';
+  String name = kDebugMode ? 'Maria Silva' : '';
+  String date = kDebugMode ? '02/22' : '';
+  String code = kDebugMode ? '255' : '';
 
-//   void setNumber(String number) {
-//     this.number = number;
-//     _next();
-//   }
+  // CreditCardCreationController(this.repository);
 
-//   void setName(String name) {
-//     this.name = name;
-//     _next();
-//   }
+  void setNumber(String number) {
+    this.number = number;
+    _next();
+  }
 
-//   void setDate(String date) {
-//     this.date = date;
-//     _next();
-//   }
+  void setName(String name) {
+    this.name = name;
+    _next();
+  }
 
-//   void setCode(String code) {
-//     this.code = code;
-//     _next();
-//   }
+  void setDate(String date) {
+    this.date = date;
+    _next();
+  }
 
-//   Future<void> createCard() async {
-//     final n = number.replaceAll(" ", "");
-//     final m = int.parse(date.split("/")[0]) ?? 0;
-//     final y = int.parse(date.split("/")[1]) ?? 0;
+  void setCode(String code) {
+    this.code = code;
+    _next();
+  }
 
-//     CreditCardModel creditCard = CreditCardModel(
-//       number: n,
-//       holderName: name,
-//       cvv: code,
-//       expYear: y,
-//       expMonth: m,
-//     );
+  Future<void> createCard() async {
+    final n = number.replaceAll(" ", "");
+    final m = int.parse(date.split("/")[0]);
+    final y = int.parse(date.split("/")[1]);
 
-//     try {
-//       final cardId = await repository.create(creditCard);
+    CreditCardModel creditCard = CreditCardModel(
+      number: n,
+      holderName: name,
+      cvv: code,
+      expYear: y,
+      expMonth: m,
+    );
 
-//       if (paymentInfo != null) {
-//         return await _pay(cardId);
-//       }
-//       _next();
-//     } catch (e) {
-//       addError(e);
-//     }
-//   }
+    // try {
+    //   final cardId = await repository.create(creditCard);
 
-//   Future _pay(String cardId) async {
-//     try {
-//       await repository.pay(paymentInfo..cardId = cardId);
-//       _next();
-//     } catch (e) {
-//       addError(e);
-//     }
-//   }
+    //   if (paymentInfo != null) {
+    //     return await _pay(cardId);
+    //   }
+    //   _next();
+    // } catch (e) {
+    //   addError(e);
+    // }
+  }
 
-//   @override
-//   tryAgain(context) {
-//     super.tryAgain(context);
-//     pageController = PageController(initialPage: pageIndex);
-//   }
+  // Future _pay(String cardId) async {
+  //   try {
+  //     await repository.pay(paymentInfo..cardId = cardId);
+  //     _next();
+  //   } catch (e) {
+  //     addError(e);
+  //   }
+  // }
 
-//   void _next() => pageController.jumpToPage(++pageIndex);
+  @override
+  tryAgain(context, onPop) {
+    super.tryAgain(context, onPop);
+    pageController = PageController(initialPage: pageIndex);
+  }
 
-//   void previous() => pageController.jumpToPage(--pageIndex);
-// }
+  void _next() => pageController.jumpToPage(++pageIndex);
+
+  void previous() => pageController.jumpToPage(--pageIndex);
+}

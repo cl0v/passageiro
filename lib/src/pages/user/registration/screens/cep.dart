@@ -67,8 +67,12 @@ class _UserCepScreenState extends State<UserCepScreen> {
               child: CustomTextFieldWidget(
                 controller: _tCEP,
                 keyboardType: TextInputType.number,
-                onChanged: (_) {
-                  setState(() {});
+                onChanged: (_) async {
+                  if (cepValidator(_tCEP.text)) {
+                    await controller.fetchAddress(_tCEP.text);
+                  }else{
+                    setState(() {});
+                  }
                 },
                 labelText: 'CEP',
                 inputFormatters: [mask],

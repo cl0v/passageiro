@@ -1,28 +1,28 @@
+import 'package:http/http.dart';
+
 enum ApiLevel {
-  V1,
-  V2,
+  v1,
+  v2,
 }
 
 abstract class IHttpClient {
-  setHeader(Map<String, String> headers);
+  setAuthorization(String authorization);
 
-  Future<dynamic> get(
+  Future<Response> get(
     String unencodedPath, {
     String? authority,
-    Map<String, String>? headers,
     Map<String, dynamic>? queryParameters,
   });
 
-  Future<dynamic> post(
-    String unencodedPath, {
-    String? authority,
-    Map<String, String>? headers,
+  Future<Response> post(
+    ApiLevel version,
+    String path, {
     bool headersRequired = true,
-    dynamic body,
+    String body,
     Map<String, dynamic>? queryParameters,
   });
 
-  Future<dynamic> put(
+  Future<Response> put(
     ApiLevel version,
     String path,
     String body,

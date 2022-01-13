@@ -30,6 +30,7 @@ class _NicknameScreenState extends State<NicknameScreen> {
   @override
   void didChangeDependencies() {
     controller = UserPreRegistrationProvider.of(context)!;
+    _tNick.text = controller.viewModel.nickname;
     super.didChangeDependencies();
   }
 

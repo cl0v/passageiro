@@ -41,6 +41,14 @@ dependencies:
   shimmer: ^2.0.0
   smooth_page_indicator: null
   syncfusion_flutter_pdfviewer: ^19.4.41-beta
+  buzzao_ble_protocol:
+    git:
+      url: "git@gitlab.materialize.pro:buzzao/dart-ble-protocol.git"
+      ref: "r2-null-safety"
+  qr_mobile_vision: ^3.0.1
+  loading_overlay: ^0.3.0
+  credit_card_number_validator: ^1.0.4
+  credit_card_type_detector: ^2.0.0
 
 dev_dependencies:
 
