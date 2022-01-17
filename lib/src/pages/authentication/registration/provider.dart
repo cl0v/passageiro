@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:passageiro/src/pages/user/registration/controller.dart';
+
+import 'controller.dart';
 
 class UserRegistrationProvider extends InheritedWidget {
   static const String route = 'Registration';

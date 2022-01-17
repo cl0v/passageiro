@@ -6,11 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:passageiro/core/utils/bloc.dart';
 import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/src/pages/user/registration/models.dart';
-import 'package:passageiro/src/pages/user/registration/state.dart';
-import 'package:passageiro/src/pages/user/registration/viewmodel.dart';
-import 'package:passageiro/src/pages/user/repository.dart';
 import 'package:passageiro/src/services/http_client.dart';
+
+import '../repository.dart';
+import 'models.dart';
+import 'state.dart';
+import 'viewmodel.dart';
 
 //TODO: Substituir _nextPage nas telas
 
@@ -20,7 +21,7 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
 
   late final viewModel = UserRegistrationViewModel();
 
-  final UserRepository repository;
+  final AuthenticationRepository repository;
 
   int _pageIndex = 0;
 
@@ -54,9 +55,8 @@ class UserRegistrationController extends Bloc<UserRegistrationState> {
   }
 
   void setImages(List<XFile> images) async {
-
     List<File> fileImages = [];
-    
+
     for (XFile img in images) {
       fileImages.add(await viewModel.compressFile(File(img.path)));
     }

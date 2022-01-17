@@ -4,21 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:passageiro/core/http/endpoint.dart';
 import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/src/interfaces/http.dart';
-import 'package:passageiro/src/pages/user/models/sign_in.dart';
-import 'package:passageiro/src/pages/user/models/utils.dart';
-import 'package:passageiro/src/pages/user/pre-registration/viewmodel.dart';
-import 'package:passageiro/src/pages/user/registration/models.dart';
-import 'package:passageiro/src/utils/enviroment.dart';
+import 'package:passageiro/src/blocs/enviroment.dart';
+import 'package:passageiro/src/services/token_storage.dart';
 
 import 'interface.dart';
+import 'models/utils.dart';
+import 'pre-registration/viewmodel.dart';
+import 'registration/models.dart';
 import 'registration/viewmodel.dart';
 
-class UserRepository implements IUserPreRegistrationRepository {
+class AuthenticationRepository implements IAuthentication {
   final IHttpClient http;
+  final TokenStorageService tokenStorageService;
 
-  UserRepository({
+  const AuthenticationRepository({
     required this.http,
+    required this.tokenStorageService,
   });
+
+  @override
+  Future<bool> get isUserConnected async {
+    try {
+      final token = await tokenStorageService.token;
+      if ((await tokenStorageService.token) != null) {
+        final dateTime = await tokenStorageService.expiration;
+        final value = !dateTime.compareTo(DateTime.now()).isNegative;
+        if (value) http.setAuthorization(token!);
+        return value;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<void> register(UserRegistrationViewModel registration) async {
     try {
@@ -26,17 +44,19 @@ class UserRepository implements IUserPreRegistrationRepository {
       final response = await http.put(ApiLevel.v2, httpUserCompleteSignUp,
           jsonEncode(registration.toServerMap()));
       if (response.statusCode != 200) {
-        throw CustomError(message: 'Não foi possível concluir o cadastro');
+        throw CustomError(message: jsonDecode(response.body)['message']);
       }
     } catch (e) {
-      throw CustomError(message: 'Ocorreu um error com a busca');
+      rethrow;
     }
   }
 
   Future<Address?> fetchAddress(String cep) async {
     try {
-      final response =
-          await http.get('ws/$cep/json/', authority: 'viacep.com.br');
+      final response = await http.rawGet(
+        'viacep.com.br',
+        'ws/$cep/json/',
+      );
       if (response.statusCode == 200) {
         AddressFromViaCepApi address =
             AddressFromViaCepApi.fromJson(response.body);
@@ -56,9 +76,9 @@ class UserRepository implements IUserPreRegistrationRepository {
   }
 
   @override
-  sendCode(int phone) async {
+  Future<bool> sendPhoneCode(int phone) async {
     try {
-      await http.post(
+      final response = await http.post(
         ApiLevel.v2,
         httpUserPhoneSendCode,
         body: jsonEncode(
@@ -68,6 +88,10 @@ class UserRepository implements IUserPreRegistrationRepository {
           },
         ),
       );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['completedRegistration'];
+      }
+      return false;
     } catch (e) {
       rethrow;
     }
@@ -78,13 +102,16 @@ class UserRepository implements IUserPreRegistrationRepository {
   Future<bool> verifyCode(UserPreRegistrationViewModel model) async {
     try {
       //TODO: Testar o retorno
-      final response = await http.post(ApiLevel.v1, httpUserPhoneCodeVerify,
+      final response = await http.post(ApiLevel.v1, httpUserLoginWithPhone,
           body: jsonEncode(
             model.toCodeVerification(),
           ));
       final map = jsonDecode(response.body);
-      http.setAuthorization(jsonDecode(response.body)['token']);
-      return map['success']; //TODO: Pedir para remover;
+      final r = jsonDecode(response.body);
+      tokenStorageService.save(r['token'], r['expire']);
+      http.setAuthorization(r['token']);
+      return map['success'];
+      //TODO: Pedir para remover;
 
     } catch (e) {
       return false;

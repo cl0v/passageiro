@@ -50,6 +50,7 @@ dependencies:
   credit_card_number_validator: ^1.0.4
   credit_card_type_detector: ^2.0.0
   flutter_native_image: ^0.0.6+1
+  flutter_secure_storage: ^5.0.2
 
 dev_dependencies:
 

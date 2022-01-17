@@ -2,21 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/bloc.dart';
 import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/src/pages/user/pre-registration/viewmodel.dart';
-import 'package:passageiro/src/pages/user/registration/provider.dart';
+import 'package:passageiro/src/pages/authentication/registration/provider.dart';
+import 'package:passageiro/src/pages/home/provider.dart';
 
 import '../interface.dart';
 import 'state.dart';
+import 'viewmodel.dart';
 
 class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
   final viewModel = UserPreRegistrationViewModel();
 
-  late final IUserPreRegistrationRepository repository;
+  late final IAuthentication repository;
 
   UserPreRegistrationController({required this.repository})
       : super(loadingState: UserPreRegistrationState.loading);
 
+  bool alreadyRegistered = false;
+
   late final BuildContext context;
+
   init(BuildContext context) {
     this.context = context;
   }
@@ -27,7 +31,11 @@ class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
     add(UserPreRegistrationState.loading);
     try {
       if (await repository.verifyCode(viewModel)) {
-        pushNamed(context, UserRegistrationProvider.route, replace: true);
+        if (alreadyRegistered) {
+          pushNamed(context, HomeProvider.route, replace: true);
+        } else {
+          pushNamed(context, UserRegistrationProvider.route, replace: true);
+        }
       } else {
         addError(
             CustomError(message: 'O código de verificação está incorreto'));
@@ -44,7 +52,7 @@ class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
     viewModel.phone = phone;
     try {
       add(UserPreRegistrationState.loading);
-      await repository.sendCode(int.parse(phone));
+      alreadyRegistered = await repository.sendPhoneCode(int.parse(phone));
       onContinuePressed();
     } catch (e) {
       addError(CustomError(message: 'Número de telefone inválido'));

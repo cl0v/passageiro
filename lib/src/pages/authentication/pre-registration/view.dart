@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/src/pages/user/pre-registration/screens/success.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
 import 'screens/nickname.dart';
@@ -8,6 +7,7 @@ import 'screens/phone.dart';
 import 'controller.dart';
 import 'provider.dart';
 import 'screens/phone_code_confirmation.dart';
+import 'screens/success.dart';
 import 'state.dart';
 
 class UserPreRegistrationPage extends StatefulWidget {

@@ -8,10 +8,13 @@ enum ApiLevel {
 abstract class IHttpClient {
   setAuthorization(String authorization);
 
+  Future<Response> rawGet(String authority, String path);
+
   Future<Response> get(
-    String unencodedPath, {
-    String? authority,
+    ApiLevel version,
+    String path, {
     Map<String, dynamic>? queryParameters,
+    bool authorizationRequired = true,
   });
 
   Future<Response> post(
@@ -20,11 +23,13 @@ abstract class IHttpClient {
     bool headersRequired = true,
     String body,
     Map<String, dynamic>? queryParameters,
+    bool authorizationRequired = true,
   });
 
   Future<Response> put(
     ApiLevel version,
     String path,
-    String body,
-  );
+    String body, {
+    bool authorizationRequired = true,
+  });
 }

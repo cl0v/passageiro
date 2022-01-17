@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:passageiro/src/pages/user/pre-registration/controller.dart';
+
+import 'controller.dart';
 
 class UserPreRegistrationProvider extends InheritedWidget {
   static const route = 'Pre-Registration';

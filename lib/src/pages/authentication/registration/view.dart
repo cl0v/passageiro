@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/src/pages/user/registration/provider.dart';
-import 'package:passageiro/src/pages/user/registration/screens/address.dart';
-import 'package:passageiro/src/pages/user/registration/state.dart';
+import 'package:passageiro/src/pages/home/provider.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
 import 'package:passageiro/src/screens/success.dart';
 
 import 'controller.dart';
+import 'provider.dart';
+import 'screens/address.dart';
 import 'screens/cep.dart';
 import 'screens/cpf.dart';
 import 'screens/email.dart';
@@ -15,6 +15,7 @@ import 'screens/name.dart';
 import 'screens/pictures.dart';
 import 'screens/pin.dart';
 import 'screens/pin_confirmation.dart';
+import 'state.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   const UserRegistrationPage({Key? key}) : super(key: key);
@@ -99,10 +100,9 @@ class _StateHandler extends StatelessWidget {
         break;
       case UserRegistrationState.success:
         result = SucessScreen(
-          text: 'Parabens! Cadastro completo!',
-          onPressed: () {
-            pop(context);
-          },
+          text: 'Parabéns! Cadastro completo!',
+          onPressed: () =>
+              pushNamed(context, HomeProvider.route, replace: true),
         );
         break;
     }

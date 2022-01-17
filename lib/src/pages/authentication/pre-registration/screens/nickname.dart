@@ -1,56 +1,53 @@
-import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/intl/strings.dart';
-import 'package:passageiro/src/pages/user/registration/provider.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
-import '../validators.dart';
+import '../provider.dart';
 
-class UserCPFScreen extends StatefulWidget {
-  const UserCPFScreen({Key? key}) : super(key: key);
+class NicknameScreen extends StatefulWidget {
+  const NicknameScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<UserCPFScreen> createState() => _UserCPFScreenState();
+  State<NicknameScreen> createState() => _NicknameScreenState();
 }
 
-class _UserCPFScreenState extends State<UserCPFScreen> {
-  late final TextEditingController _tCpf;
-  late final UserRegistrationController controller;
+class _NicknameScreenState extends State<NicknameScreen> {
+  late final TextEditingController _tNick;
 
-  final mask = TextInputMask(
-    mask: ['999.999.999-99'],
-  );
+  late final UserPreRegistrationController controller;
 
   @override
   void initState() {
-    _tCpf = TextEditingController();
+    _tNick = TextEditingController();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    controller = UserRegistrationProvider.of(context)!;
-    _tCpf.text = mask.magicMask.getMaskedString(controller.viewModel.cpf);
+    controller = UserPreRegistrationProvider.of(context)!;
+    _tNick.text = controller.viewModel.nickname;
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    _tCpf.dispose();
+    _tNick.dispose();
     super.dispose();
   }
 
   _onNextPressed() {
-    controller.setCpf(mask.magicMask.clearMask(_tCpf.text));
+    controller.setNickname(_tNick.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFabExtended(
-        onPressed: cpfValidator(_tCpf.text) ? _onNextPressed : null,
+        onPressed: _onNextPressed,
         label: continueNext,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -59,20 +56,15 @@ class _UserCPFScreenState extends State<UserCPFScreen> {
         child: Column(
           children: [
             Text(
-              'Qual é o número do seu CPF?',
+              'Como você gostaria de ser chamado?',
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.start,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 12.0, 8, 0),
               child: CustomTextFieldWidget(
-                controller: _tCpf,
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {});
-                },
-                inputFormatters: [mask],
-                labelText: 'CPF',
+                controller: _tNick,
+                hintText: 'Apelido',
               ),
             )
           ],

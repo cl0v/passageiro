@@ -1,6 +1,5 @@
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:passageiro/core/intl/strings.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/pdf_reader.dart';

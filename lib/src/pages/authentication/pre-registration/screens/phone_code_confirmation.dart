@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:passageiro/core/intl/strings.dart';
-import 'package:passageiro/src/pages/user/pre-registration/provider.dart';
 import 'package:passageiro/src/widgets/fab.dart';
 import 'package:passageiro/src/widgets/text_field.dart';
 
 import '../controller.dart';
+import '../provider.dart';
 
 class UserPhoneCodeConfirmationScreen extends StatefulWidget {
   const UserPhoneCodeConfirmationScreen({Key? key}) : super(key: key);

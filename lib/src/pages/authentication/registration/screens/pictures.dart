@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:passageiro/core/intl/strings.dart';
@@ -62,7 +63,9 @@ class _UserRegistrationPicturesScreenState
   }
 
   _onTap(String title) async {
-    final file = await ImagePicker().pickImage(source: ImageSource.camera);
+    final file = await ImagePicker().pickImage(
+      source: kDebugMode ? ImageSource.gallery : ImageSource.camera,
+    );
 
     if (file != null) {
       _files[title] = file;
