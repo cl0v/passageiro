@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+const Color colorButtonStart = Color(0xFF9258F8);
+const Color colorButtonEnd = Color(0xFF7E54DC);
+
 const Color colorScaffoldBackground = Color(0xFF6E46C8);
 const Color colorReturn = Color(0xffFF595B);
 const Color colorPrimary = Color(0xFF6E46C8);

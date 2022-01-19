@@ -30,7 +30,7 @@ class CustomTextFieldWidget extends StatelessWidget {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       textAlign: TextAlign.center,
-      decoration: InputDecoration(
+      decoration: InputDecoration( 
         labelText: labelText,
         hintText: hintText,
       ),

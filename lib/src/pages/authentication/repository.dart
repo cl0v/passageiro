@@ -1,19 +1,17 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:passageiro/core/http/api.dart';
-import 'package:passageiro/core/http/endpoint.dart';
-import 'package:passageiro/core/utils/error_handler.dart';
-import 'package:passageiro/src/interfaces/http.dart';
-import 'package:passageiro/src/blocs/enviroment.dart';
-import 'package:passageiro/src/services/dio_http.dart';
-import 'package:passageiro/src/services/token_storage.dart';
+import 'package:passageiro/src/pages/authentication/state.dart';
 
 import 'interface.dart';
 import 'models/utils.dart';
-import 'pre-registration/viewmodel.dart';
 import 'registration/models.dart';
 import 'registration/viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'pre-registration/viewmodel.dart';
+import 'package:passageiro/core/http/api.dart';
+import 'package:passageiro/core/http/endpoint.dart';
+import 'package:passageiro/src/blocs/enviroment.dart';
+import 'package:passageiro/src/services/dio_http.dart';
+import 'package:passageiro/core/utils/error_handler.dart';
 
 class AuthenticationRepository implements IAuthentication {
   final DioHttpService http;
@@ -74,19 +72,22 @@ class AuthenticationRepository implements IAuthentication {
   }
 
   @override
-  Future<bool> sendPhoneCode(int phone) async {
+  Future<UserAccountCreationState> sendPhoneCode(
+      UserPreRegistrationViewModel viewModel) async {
     try {
       final response = await http.post(
-          apiV2,
-          httpUserPhoneSendCode,
-          jsonEncode({
-            "phone": phone,
-            "concessionaireId": kConcessionaireToledo,
-          }));
+        apiV2,
+        httpUserPhoneSendCode,
+        viewModel.toSendCode(),
+      );
       if (response.statusCode == 200) {
-        return jsonDecode(response.data)['completedRegistration'];
+        if (jsonDecode(response.data)['completedRegistration'] == true) {
+          return UserAccountCreationState.registrationCompleted;
+        } else {
+          return UserAccountCreationState.preRegistered;
+        }
       }
-      return false;
+      return UserAccountCreationState.notRegistered;
     } catch (e) {
       rethrow;
     }

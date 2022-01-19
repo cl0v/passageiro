@@ -12,14 +12,32 @@ final defaultTheme = ThemeData(
 
 final ThemeData purplePageDefaultTheme = ThemeData(
   scaffoldBackgroundColor: colorScaffoldBackground,
-  textTheme: const TextTheme(
-    button: TextStyle(
+  brightness: Brightness.dark,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      primary: colorButtonStart,
+      onPrimary: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(elevation: 0, color: Colors.transparent),
+  textTheme: TextTheme(
+    headline5: GoogleFonts.nunito(
+      // decoration: TextDecoration.underline,
+      color: Colors.white,
+      fontSize: 26,
+      fontWeight: FontWeight.w800,
+    ),
+    button: const TextStyle(
       color: colorScaffoldBackground,
     ),
   ),
 );
 
 final ThemeData loginPageTheme = purplePageDefaultTheme.copyWith(
+    scaffoldBackgroundColor: colorScaffoldBackground,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: Colors.white,

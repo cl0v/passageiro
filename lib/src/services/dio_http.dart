@@ -13,14 +13,13 @@ class DioHttpService {
   Future<Map<String, dynamic>> get headers async {
     final authorization = await tokenService.token;
     if (authorization == null) {
-      return {
-        'Content-Type': 'application/json; charset=utf-8',
-      };
+      return {'content-type': 'application/json', "accept": "application/json"};
     }
 
     return {
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
       'Authorization': authorization,
+      "accept": "application/json"
     };
   }
 
@@ -44,10 +43,19 @@ class DioHttpService {
     return http.put(path, data: data, options: options);
   }
 
-  Future<Response> post(String url, String path, String data) async {
-    final options = Options(headers: await headers);
-    http.options = BaseOptions(baseUrl: url);
-    return http.post(path, data: data, options: options);
+  Future<Response> post(String url, String path, dynamic data) async {
+    http.options
+      ..baseUrl = url
+      ..headers = await headers;
+    return http.post(path, data: data);
+
+    // final options = Options(headers: await headers, followRedirects: false);
+    // http.options = BaseOptions(
+    //     baseUrl: url,
+    //     receiveDataWhenStatusError: true,
+    //     connectTimeout: 60 * 1000, // 60 seconds
+    //     receiveTimeout: 60 * 1000 // 60 seconds
+    //     );
   }
 
   Future<Response> patch(

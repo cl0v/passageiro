@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/design_system/themes.dart';
 import 'package:passageiro/src/blocs/enviroment.dart';
+import 'package:passageiro/src/pages/authentication/pre-registration/provider.dart';
 import 'src/pages/authentication/splash/view.dart';
 import 'src/routes/routes.dart';
 import 'src/services/alice_http_inspector.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: alice.getNavigatorKey(),
         theme: defaultTheme,
         routes: Routes.routes,
-        initialRoute: SplashScreen.route,
+        initialRoute: UserPreRegistrationProvider.route,
       ),
     );
   }

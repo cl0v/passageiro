@@ -3,6 +3,7 @@ import 'package:passageiro/core/utils/bloc.dart';
 import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/src/pages/authentication/registration/provider.dart';
+import 'package:passageiro/src/pages/authentication/state.dart';
 import 'package:passageiro/src/pages/home/provider.dart';
 
 import '../interface.dart';
@@ -52,7 +53,8 @@ class UserPreRegistrationController extends Bloc<UserPreRegistrationState> {
     viewModel.phone = phone;
     try {
       add(UserPreRegistrationState.loading);
-      alreadyRegistered = await repository.sendPhoneCode(int.parse(phone));
+      alreadyRegistered = (await repository.sendPhoneCode(viewModel)) ==
+          UserAccountCreationState.registrationCompleted;
       onContinuePressed();
     } catch (e) {
       addError(CustomError(message: 'Número de telefone inválido'));

@@ -1,12 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:passageiro/core/utils/navigator.dart';
-import 'package:passageiro/design_system/colors.dart';
 import 'package:passageiro/design_system/themes.dart';
 import 'package:passageiro/src/pages/authentication/pre-registration/provider.dart';
 
-//TODO: Refazer essa parte das cores
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -53,18 +50,17 @@ class _Body extends StatelessWidget {
                 child: const Text('Começar'),
               ),
             ),
-            const SizedBox(height: 31),
+            const SizedBox(height: 32),
             RichText(
               text: TextSpan(
                 children: [
                   const TextSpan(text: 'Já tem uma conta? '),
                   TextSpan(
                     text: 'Entre aqui',
-                    //TODO: Adicionar theme.of
                     style: Theme.of(context).textTheme.bodyText1,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        // Navigator.of(context).pushNamed(Routes.signIn);
+                        //TODO: Implement on signIn
                       },
                   ),
                 ],
