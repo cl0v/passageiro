@@ -6,10 +6,16 @@ const httpUserLoginWithPhone = '/auth/auth/login';
 const httpUserPhoneSendCode =
     'api/user/signUp'; //https://apiv2.buzzao.com.br/api/user/signUp
 
-const httpUserPreRegistrationCodeVerification = 'api/user/auth/signUp';
+const httpUserPreRegistrationCodeVerification = '/api/user/auth/signUp';
 
-const httpUserCompleteSignUp = 'api/user/signUp/complete';
+const httpUserCompleteSignUp = '/api/user/signUp/complete';
 
-const httpEnviromentVariables = 'wallet/api/v1/wallet';
+const httpEnviromentVariables = '/wallet/api/v1/wallet';
 
-const httpEnviromentUserClasses = 'wallet/api/v1/wallet/classes';
+const httpEnviromentUserClasses = '/wallet/api/v1/wallet/classes';
+
+const httpUserRegisteredCards = '/wallet/api/v1/wallet/cards';
+
+const httpCreditCardCreate = '/wallet/api/v1/wallet/customer/card';
+
+const httpVirtualCard = '/wallet/api/v1/wallet/virtual-card';

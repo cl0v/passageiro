@@ -7,6 +7,9 @@ import 'package:passageiro/src/pages/home/view.dart';
 import 'package:passageiro/src/pages/payment/credit_card/create/controller.dart';
 import 'package:passageiro/src/pages/payment/credit_card/create/provider.dart';
 import 'package:passageiro/src/pages/payment/credit_card/create/view.dart';
+import 'package:passageiro/src/pages/payment/refill/controller.dart';
+import 'package:passageiro/src/pages/payment/refill/provider.dart';
+import 'package:passageiro/src/pages/payment/refill/view.dart';
 import 'package:passageiro/src/pages/pdf_reader.dart';
 import 'package:passageiro/src/pages/ticket/pay/controller.dart';
 import 'package:passageiro/src/pages/ticket/pay/provider.dart';
@@ -18,14 +21,13 @@ import 'package:passageiro/src/pages/authentication/registration/controller.dart
 import 'package:passageiro/src/pages/authentication/registration/provider.dart';
 import 'package:passageiro/src/pages/authentication/registration/view.dart';
 import 'package:passageiro/src/pages/authentication/repository.dart';
+import 'package:passageiro/src/services/dio_http.dart';
 import 'package:passageiro/src/services/http_client.dart';
-import 'package:passageiro/src/services/token_storage.dart';
 
 class Routes {
   static final http = HttpClientService();
   static final authRepository = AuthenticationRepository(
-    http: http,
-    tokenStorageService: TokenStorageService(),
+    http: DioHttpService(),
   );
 
   static final Map<String, Widget Function(BuildContext)> routes = {
@@ -54,6 +56,10 @@ class Routes {
           controller: SplashController(
             authentication: authRepository,
           ),
-        )
+        ),
+    PaymentRefillProvider.route: (context) => PaymentRefillProvider(
+          child: const PaymentRefillPage(),
+          controller: PaymentRefillController(),
+        ),
   };
 }

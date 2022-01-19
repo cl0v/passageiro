@@ -51,7 +51,8 @@ dependencies:
   credit_card_type_detector: ^2.0.0
   flutter_native_image: ^0.0.6+1
   flutter_secure_storage: ^5.0.2
-
+  uuid: ^3.0.5
+  dio: 
 dev_dependencies:
 
   # The "flutter_lints" package below contains a set of recommended lints to

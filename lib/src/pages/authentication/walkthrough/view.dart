@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/intl/strings.dart';
+import 'package:passageiro/core/utils/navigator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalkthroughScreen extends StatelessWidget {
-  WalkthroughScreen({Key? key}) : super(key: key);
-
+  WalkthroughScreen({Key? key, required this.route}) : super(key: key);
+  final String route;
+  
   final _controller = PageController();
 
-  _onSkipPressed() {
-    //TODO: Implement skip Walkthrough...
+  _onSkipPressed(context) {
+    pushNamed(context, route);
   }
-  
-  _onNextPressed() {
+
+  _onNextPressed(context) {
     if (_controller.page! >= (_list.length - 1).toDouble()) {
-      return _onSkipPressed();
+      return _onSkipPressed(context);
     }
     _controller.nextPage(
         duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -34,7 +36,7 @@ class WalkthroughScreen extends StatelessWidget {
             children: [
               TextButton(
                 child: const Text(skip),
-                onPressed: _onSkipPressed,
+                onPressed: () => _onSkipPressed(context),
               ),
               SmoothPageIndicator(
                 controller: _controller,
@@ -42,7 +44,7 @@ class WalkthroughScreen extends StatelessWidget {
               ),
               TextButton(
                 child: const Text(next),
-                onPressed: _onNextPressed,
+                onPressed: () => _onNextPressed(context),
               ),
             ],
           )),

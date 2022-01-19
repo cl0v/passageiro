@@ -53,17 +53,15 @@ class _CreditCardCreationPageState extends State<CreditCardCreationPage> {
       const CreditCardReviewScreen(),
       SucessScreen(
         text: 'Cartão cadastrado com sucesso!',
-        onPressed: () {
-          //TODO: Trocar para popUntil
-          pop(context);
-          // return popUntil(context, Routes.menu);
-        },
+        onPressed: () => pop(
+          context,
+          controller.cardId,
+        ),
       )
     ];
     return Theme(
-      //TODO: Isolar o tema
       data: Theme.of(context).copyWith(
-        appBarTheme: AppBarTheme(elevation: 0, color: colorPrimary),
+        appBarTheme: const AppBarTheme(elevation: 0, color: colorPrimary),
         scaffoldBackgroundColor: colorPrimary,
         textTheme: TextTheme(
           headline2: GoogleFonts.nunito(

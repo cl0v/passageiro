@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-
-const Color colorGoing = Color(0xFF6E46C8);
+const Color colorScaffoldBackground = Color(0xFF6E46C8);
 const Color colorReturn = Color(0xffFF595B);
 const Color colorPrimary = Color(0xFF6E46C8);
 const Color colorAccent = Color(0xFF5BE3BF);
@@ -23,3 +22,8 @@ const Color colorOrangeBus = Color(0xFFF79E1B);
 const Color colorInputBorder = Color(0xFFDADADA);
 const Color colorTextCalendar = Color(0xFF8F92A1);
 const Color colorTextHint = Color(0xFF979797);
+
+const List<Color> virtualCardColors = [
+  Color(0xFF5F82E3),
+  Color(0xFF9454FA),
+];

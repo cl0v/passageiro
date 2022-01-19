@@ -6,7 +6,7 @@ import 'package:passageiro/src/pages/home/provider.dart';
 import 'package:passageiro/src/pages/home/view.dart';
 import 'package:passageiro/src/screens/loading.dart';
 
-import 'state.dart';
+import '../state.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String route = 'splash';

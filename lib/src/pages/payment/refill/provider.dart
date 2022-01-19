@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 
 class PaymentRefillProvider extends InheritedWidget {
+  static const String route = 'payment/refill';
+
   const PaymentRefillProvider({
     Key? key,
     required Widget child,

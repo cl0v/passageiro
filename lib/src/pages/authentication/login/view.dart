@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:passageiro/core/utils/navigator.dart';
 import 'package:passageiro/design_system/colors.dart';
+import 'package:passageiro/design_system/themes.dart';
 import 'package:passageiro/src/pages/authentication/pre-registration/provider.dart';
 
 //TODO: Refazer essa parte das cores
@@ -16,10 +17,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    return Theme(data: loginPageTheme, child: const _Body());
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 26),
+      body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(flex: 3),
             GestureDetector(
@@ -31,17 +43,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const Spacer(flex: 3),
-            MaterialButton(
-              onPressed: () {
-                pushNamed(context, UserPreRegistrationProvider.route);
-              },
-              child: Text(
-                'Começar',
-                style: GoogleFonts.nunito(
-                    fontSize: 16, fontWeight: FontWeight.w600),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .85,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  pushNamed(context, UserPreRegistrationProvider.route);
+                },
+                child: const Text('Começar'),
               ),
-              color: Colors.white,
-              textColor: colorPrimary,
             ),
             const SizedBox(height: 31),
             RichText(
@@ -49,15 +59,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const TextSpan(text: 'Já tem uma conta? '),
                   TextSpan(
-                      text: 'Entre aqui',
-                      style: GoogleFonts.nunito(
-                          fontSize: 15,
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.bold),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigator.of(context).pushNamed(Routes.signIn);
-                        }),
+                    text: 'Entre aqui',
+                    //TODO: Adicionar theme.of
+                    style: Theme.of(context).textTheme.bodyText1,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // Navigator.of(context).pushNamed(Routes.signIn);
+                      },
+                  ),
                 ],
               ),
             ),

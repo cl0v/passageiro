@@ -6,7 +6,7 @@ enum ApiLevel {
 }
 
 abstract class IHttpClient {
-  setAuthorization(String authorization);
+setAuthorization(String authorization);
 
   Future<Response> rawGet(String authority, String path);
 

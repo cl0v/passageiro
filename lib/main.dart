@@ -5,9 +5,8 @@ import 'src/pages/authentication/splash/view.dart';
 import 'src/routes/routes.dart';
 import 'src/services/alice_http_inspector.dart';
 
-// TODO: Adicionar sistema de login automatico
-// O login irá verificar se tem algum token de sessão salvo
-// e irá olhar a data de expiração dele
+
+
 
 //TODO: Ta rolando um bug que quando o user ja tem o número cadastrado,
 // pode cadastrar com outro num
@@ -36,12 +35,11 @@ class MyApp extends StatelessWidget {
     return Enviroment(
       bloc: EnviromentBloc(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Buzzão',
         navigatorKey: alice.getNavigatorKey(),
         theme: defaultTheme,
         routes: Routes.routes,
         initialRoute: SplashScreen.route,
-        // home:
       ),
     );
   }

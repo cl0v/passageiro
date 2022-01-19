@@ -1,17 +1,17 @@
 
-class UserClasses {
+class WalletClasses {
   final String id;
-  final String? name;
-  final String? type;
   final int classId;
+  final String name;
+  final String? type;
   final int? purseId;
   final int? vCardPurseId;
   final int? priority;
   final Rules? rules;
 
-  UserClasses(
+  WalletClasses(
       {required this.id,
-      this.name,
+      required this.name,
       this.type,
       required this.classId,
       this.purseId,
@@ -32,8 +32,8 @@ class UserClasses {
     };
   }
 
-  factory UserClasses.fromMap(Map<String, dynamic> map) {
-    return UserClasses(
+  factory WalletClasses.fromMap(Map<String, dynamic> map) {
+    return WalletClasses(
       id: map['id'] ?? '',
       name: map['name'],
       type: map['type'],

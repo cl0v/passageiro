@@ -34,8 +34,6 @@ class _CreditCardReviewScreenState extends State<CreditCardReviewScreen> {
     return LoadingOverlay(
       isLoading: loading,
       progressIndicator: Shimmer.fromColors(
-        // baseColor: Colors.red,
-        // highlightColor: Colors.yellow,
         baseColor: colorPrimary,
         highlightColor: colorSecundary,
         child: const Text(

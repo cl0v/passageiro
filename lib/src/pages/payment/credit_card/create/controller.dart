@@ -1,13 +1,14 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/bloc.dart';
+import 'package:passageiro/core/utils/error_handler.dart';
 
-import '../model.dart';
+import '../repository.dart';
+import 'model.dart';
 import 'state.dart';
 
 class CreditCardCreationController extends Bloc<CreditCardCreationState> {
-  // final ICreditCard repository;
+  final CreditCardRepository repository = CreditCardRepository();
 
   late PageController pageController;
 
@@ -19,6 +20,8 @@ class CreditCardCreationController extends Bloc<CreditCardCreationState> {
   String name = kDebugMode ? 'Maria Silva' : '';
   String date = kDebugMode ? '02/22' : '';
   String code = kDebugMode ? '255' : '';
+
+  late String? cardId;
 
   // CreditCardCreationController(this.repository);
 
@@ -55,26 +58,14 @@ class CreditCardCreationController extends Bloc<CreditCardCreationState> {
       expMonth: m,
     );
 
-    // try {
-    //   final cardId = await repository.create(creditCard);
-
-    //   if (paymentInfo != null) {
-    //     return await _pay(cardId);
-    //   }
-    //   _next();
-    // } catch (e) {
-    //   addError(e);
-    // }
+    try {
+      cardId = await repository.create(creditCard);
+      _next();
+    } catch (e) {
+      addError(CustomError(message: 'Não foi possível cadastrar o cartão.'));
+    }
   }
 
-  // Future _pay(String cardId) async {
-  //   try {
-  //     await repository.pay(paymentInfo..cardId = cardId);
-  //     _next();
-  //   } catch (e) {
-  //     addError(e);
-  //   }
-  // }
 
   @override
   tryAgain(context, onPop) {

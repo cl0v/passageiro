@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passageiro/core/utils/navigator.dart';
+import 'package:passageiro/design_system/themes.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
 import 'screens/nickname.dart';
@@ -37,37 +38,40 @@ class _UserPreRegistrationPageState extends State<UserPreRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => controller.onBackPressed(context),
+    return Theme(
+      data: purplePageDefaultTheme,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => controller.onBackPressed(context),
+          ),
         ),
-      ),
-      body: StreamBuilder<UserPreRegistrationState>(
-        stream: controller.stream,
-        initialData: UserPreRegistrationState.values.first,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return ErrorScreen(
-              //TODO: Printar o erro de forma correta com base no error handler!
-              text: snapshot.error.toString(),
-              onPressed: ()=> controller.tryAgain(context, () {
-                pop(context);
-              }),
+        body: StreamBuilder<UserPreRegistrationState>(
+          stream: controller.stream,
+          initialData: UserPreRegistrationState.values.first,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return ErrorScreen(
+                //TODO: Printar o erro de forma correta com base no error handler!
+                text: snapshot.error.toString(),
+                onPressed: ()=> controller.tryAgain(context, () {
+                  pop(context);
+                }),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.data == null) {
+              return const Text('Algo deu errado!');
+            }
+            return _StateHandler(
+              state: snapshot.data!,
             );
-          }
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.data == null) {
-            return const Text('Algo deu errado!');
-          }
-          return _StateHandler(
-            state: snapshot.data!,
-          );
-        },
+          },
+        ),
       ),
     );
   }

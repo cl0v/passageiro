@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:passageiro/core/http/api.dart';
 import 'package:passageiro/core/http/endpoint.dart';
 import 'package:passageiro/core/utils/error_handler.dart';
 import 'package:passageiro/src/interfaces/http.dart';
 import 'package:passageiro/src/blocs/enviroment.dart';
+import 'package:passageiro/src/services/dio_http.dart';
 import 'package:passageiro/src/services/token_storage.dart';
 
 import 'interface.dart';
@@ -14,22 +16,18 @@ import 'registration/models.dart';
 import 'registration/viewmodel.dart';
 
 class AuthenticationRepository implements IAuthentication {
-  final IHttpClient http;
-  final TokenStorageService tokenStorageService;
+  final DioHttpService http;
 
   const AuthenticationRepository({
     required this.http,
-    required this.tokenStorageService,
   });
 
   @override
   Future<bool> get isUserConnected async {
     try {
-      final token = await tokenStorageService.token;
-      if ((await tokenStorageService.token) != null) {
-        final dateTime = await tokenStorageService.expiration;
+      if ((await http.tokenService.token) != null) {
+        final dateTime = await http.tokenService.expiration;
         final value = !dateTime.compareTo(DateTime.now()).isNegative;
-        if (value) http.setAuthorization(token!);
         return value;
       }
       return false;
@@ -41,10 +39,10 @@ class AuthenticationRepository implements IAuthentication {
   Future<void> register(UserRegistrationViewModel registration) async {
     try {
       //TODO: Só de fazer o put da certo, mesmo com status code diferente
-      final response = await http.put(ApiLevel.v2, httpUserCompleteSignUp,
+      final response = await http.put(apiV2, httpUserCompleteSignUp,
           jsonEncode(registration.toServerMap()));
       if (response.statusCode != 200) {
-        throw CustomError(message: jsonDecode(response.body)['message']);
+        throw CustomError(message: jsonDecode(response.data)['message']);
       }
     } catch (e) {
       rethrow;
@@ -53,13 +51,13 @@ class AuthenticationRepository implements IAuthentication {
 
   Future<Address?> fetchAddress(String cep) async {
     try {
-      final response = await http.rawGet(
-        'viacep.com.br',
-        'ws/$cep/json/',
+      final response = await http.get(
+        'http://viacep.com.br',
+        '/ws/$cep/json/',
       );
       if (response.statusCode == 200) {
         AddressFromViaCepApi address =
-            AddressFromViaCepApi.fromJson(response.body);
+            AddressFromViaCepApi.fromJson(response.data);
         return Address(
           street: address.logradouro,
           neighborhood: address.bairro,
@@ -79,17 +77,14 @@ class AuthenticationRepository implements IAuthentication {
   Future<bool> sendPhoneCode(int phone) async {
     try {
       final response = await http.post(
-        ApiLevel.v2,
-        httpUserPhoneSendCode,
-        body: jsonEncode(
-          {
+          apiV2,
+          httpUserPhoneSendCode,
+          jsonEncode({
             "phone": phone,
             "concessionaireId": kConcessionaireToledo,
-          },
-        ),
-      );
+          }));
       if (response.statusCode == 200) {
-        return jsonDecode(response.body)['completedRegistration'];
+        return jsonDecode(response.data)['completedRegistration'];
       }
       return false;
     } catch (e) {
@@ -102,17 +97,12 @@ class AuthenticationRepository implements IAuthentication {
   Future<bool> verifyCode(UserPreRegistrationViewModel model) async {
     try {
       //TODO: Testar o retorno
-      final response = await http.post(ApiLevel.v1, httpUserLoginWithPhone,
-          body: jsonEncode(
-            model.toCodeVerification(),
-          ));
-      final map = jsonDecode(response.body);
-      final r = jsonDecode(response.body);
-      tokenStorageService.save(r['token'], r['expire']);
-      http.setAuthorization(r['token']);
+      final response = await http.post(
+          api, httpUserLoginWithPhone, jsonEncode(model.toCodeVerification()));
+      final map = jsonDecode(response.data);
+      final r = jsonDecode(response.data);
+      http.tokenService.save(r['token'], r['expire']);
       return map['success'];
-      //TODO: Pedir para remover;
-
     } catch (e) {
       return false;
     }

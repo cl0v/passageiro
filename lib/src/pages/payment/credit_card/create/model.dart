@@ -5,7 +5,6 @@ class CreditCardModel {
     required this.expMonth,
     required this.expYear,
     required this.cvv,
-    // this.brand,
   });
 
   String number;
@@ -13,4 +12,12 @@ class CreditCardModel {
   int expMonth;
   int expYear;
   String cvv;
+
+  Map<String, dynamic> toJson() => {
+        'number': number,
+        'holderName': holderName,
+        'expMonth': expMonth,
+        'expYear': expYear,
+        'cvv': cvv,
+      };
 }

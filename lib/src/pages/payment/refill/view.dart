@@ -6,6 +6,10 @@ import 'package:passageiro/src/pages/payment/refill/state.dart';
 import 'package:passageiro/src/screens/error.dart';
 import 'package:passageiro/src/screens/loading.dart';
 
+import 'screens/amount.dart';
+import 'screens/classes.dart';
+import 'screens/method.dart';
+
 class PaymentRefillPage extends StatefulWidget {
   const PaymentRefillPage({Key? key}) : super(key: key);
 
@@ -36,24 +40,27 @@ class _PaymentRefillPageState extends State<PaymentRefillPage> {
           onPressed: () => controller.onBackPressed(context),
         ),
       ),
-      body: StreamBuilder<PaymentRefillState>(
-        stream: controller.stream,
-        initialData: PaymentRefillState.classes,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return ErrorScreen(
-              text: snapshot.error.toString(),
-              onPressed: () => controller.tryAgain(
-                context,
-                () => pop(context),
-              ),
-            );
-          }
-          if (!snapshot.hasData) {
-            return const LoadingScreen();
-          }
-          return _StateHandler(state: snapshot.data!);
-        },
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 12),
+        child: StreamBuilder<PaymentRefillState>(
+          stream: controller.stream,
+          initialData: PaymentRefillState.classes,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return ErrorScreen(
+                text: snapshot.error.toString(),
+                onPressed: () => controller.tryAgain(
+                  context,
+                  () => pop(context),
+                ),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const LoadingScreen();
+            }
+            return _StateHandler(state: snapshot.data!);
+          },
+        ),
       ),
     );
   }
@@ -68,12 +75,15 @@ class _StateHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late Widget result = Container();
     switch (state) {
+      // case PaymentRefillState.classes:
+      //   return PaymentRefillClassScreen();
       case PaymentRefillState.classes:
-        // TODO: Handle this case.
-        break;
+        return const PaymentRefillClassScreen();
+      case PaymentRefillState.amount:
+        return const PaymentRefillAmountScreen();
+      case PaymentRefillState.method:
+        return const PaymentRefillMethodScreen();
     }
-    return result;
   }
 }

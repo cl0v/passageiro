@@ -1,7 +1,7 @@
 import 'package:passageiro/core/utils/bloc.dart';
 import 'package:passageiro/src/pages/authentication/interface.dart';
 
-import 'state.dart';
+import '../state.dart';
 
 class SplashController extends Bloc<AuthenticationState> {
   final IAuthentication authentication;
